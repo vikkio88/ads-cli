@@ -1,0 +1,14 @@
+export const LOADING = 'loading';
+export const NEW_PLAYER = 'newPlayer';
+export const MAIL = 'mail';
+export const CALENDAR = 'calendar';
+export const NEWS = 'news';
+export const TEAM = 'team';
+export const CLUB = 'club';
+export const STATS = 'stats';
+export const SETTINGS = 'settings';
+export const MAIN_DASH = 'mainDash';
+export const TEAMS_LIST = 'teamsList';
+export const TEAM_DETAILS = 'teamDetails';
+export const COACH_DETAILS = 'coachDetails';
+export const PLAYER_DETAILS = 'playerDetails';

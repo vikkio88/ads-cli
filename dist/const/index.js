@@ -1,0 +1,1 @@
+Object.defineProperty(exports,"__esModule",{value:true});var DATE_FORMAT=exports.DATE_FORMAT='DD-MM-YYYY';var TEAM_NUMBER=exports.TEAM_NUMBER=16;

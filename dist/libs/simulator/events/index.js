@@ -1,0 +1,1 @@
+var _generator=require('../../generator');var events={contractOffer:{probability:1,happened:function happened(status){var prob=this.probability;if(status.team===null){prob=80;}return _generator.randomizer.chance(prob);},instance:function instance(status){}}};var eventPool={getEvents:function getEvents(status){var events=[];Object.keys(events).forEach(function(event){});}};

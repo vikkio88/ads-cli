@@ -1,0 +1,1 @@
+var _libs=require('./libs');var _cli=require('./const/cli');var _index=require('./libs/game/index');console.log(_cli.BANNER);_index.game.init();

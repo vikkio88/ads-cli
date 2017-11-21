@@ -1,0 +1,26 @@
+{
+  "name": "ads-cli",
+  "version": "1.0.0",
+  "description": "football manager simulator cli",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/vikkio88/ads-cli",
+    "type": "git"
+  },
+  "author": "Vincenzo Ciaccio <vincenzo.ciaccio@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^4.0.0",
+    "moment": "^2.19.2",
+    "numeral": "^2.0.6"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-native": "^4.0.0",
+    "rimraf": "^2.6.2"
+  },
+  "scripts": {
+    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
+    "start": "npm run build && node dist/index.js"
+  }
+}
