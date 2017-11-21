@@ -1,1 +1,0 @@
-Object.defineProperty(exports,"__esModule",{value:true});var randomizer={pickOne:function pickOne(array){return array[this.int(0,array.length-1)];},int:function int(low,high){return Math.round(Math.random()*(high-low)+low);},chance:function chance(percentage){return this.int(0,99)<percentage;}};exports.randomizer=randomizer;

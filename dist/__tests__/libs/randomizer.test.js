@@ -1,1 +1,0 @@
-var _generator=require('../../libs/generator');describe('randomizer test',function(){test('simulates the chance always true if 100 selected',function(){expect(_generator.randomizer.chance(100)).toBe(true);});test('simulates the chance always false if 0 selected',function(){expect(_generator.randomizer.chance(0)).toBe(false);});});

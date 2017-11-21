@@ -1,1 +1,0 @@
-Object.defineProperty(exports,"__esModule",{value:true});var GAME_NAME=exports.GAME_NAME='Athletic Director Simulator';
