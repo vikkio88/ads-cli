@@ -20,7 +20,8 @@
     "rimraf": "^2.6.2"
   },
   "scripts": {
-    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "start": "npm run build && node dist/index.js"
+    "clean": "rm -rf dist/",
+    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./__tests__,./.babelrc,./package.json,./npm-debug.log,./README.md,./yarn.lock --copy-files",
+    "start": "npm run build && clear && node dist/index.js"
   }
 }
