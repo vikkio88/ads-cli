@@ -10,6 +10,7 @@
   "author": "Vincenzo Ciaccio <vincenzo.ciaccio@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "clui": "^0.3.6",
     "inquirer": "^4.0.0",
     "moment": "^2.19.2",
     "numeral": "^2.0.6",
