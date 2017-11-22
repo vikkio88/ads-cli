@@ -26,8 +26,9 @@ export const game = {
         process.exit(0);
     },
 
-    mainLoop(player, gameContext) {
-        console.log("MainLoop");
+    mainLoop(status, context) {
+        console.log(status);
+        console.log(context);
     }
 
 };

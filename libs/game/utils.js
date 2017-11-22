@@ -3,6 +3,8 @@ import { TEAM_NUMBER } from "../../const";
 import { LIST_TYPE, CONFIRM_TYPE, INPUT_TYPE } from "../../const/cli";
 import { nations } from '../../config/nationalities';
 import { generator } from '../generator';
+import { status, context } from './status';
+import { teamHelper } from '../index';
 
 const mainMenuMapping = {
     'New Game': 'new',
@@ -67,10 +69,23 @@ export const ask = {
             player = { ...answers };
             console.log("Generating Teams...");
             const teams = generator.teams(TEAM_NUMBER);
-            teams.forEach(t => {
-                console.log(t.name);
-            });
-            mainLoop(player, { teams });
+            mainLoop(
+                {
+                    ...status,
+                    player
+                },
+                {
+                    ...context,
+                    teams: {
+                        hash: teamHelper.teamsToObject(teams),
+                        list: teams
+                    },
+                    league: {
+                        ...context.league,
+                        table: teamHelper.createCleanTable(teams)
+                    }
+                }
+            );
         });
     }
-}
+};

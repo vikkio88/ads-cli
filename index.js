@@ -5,4 +5,3 @@ import { game } from './libs/game/index';
 console.log(BANNER);
 
 game.init();
-
