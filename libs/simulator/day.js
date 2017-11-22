@@ -1,48 +1,14 @@
-const extractEvents = events => {
-    const importantMessages = [];
-    const mails = [];
-    const news = [];
-
-    events.forEach(e => {
-        const messages = e.importantMessages || [];
-        importantMessages.push(...messages);
-        mails.push(...e.mails);
-        news.push(...e.news);
-    });
-    return {
-        importantMessages,
-        notifications: {
-            mails,
-            news
+import { triggerDates } from '../game/calendar';
+export const day = {
+    simulate(status, context) {
+        const today = status.date;
+        const dateTriggeredEvent = triggerDates[today.format('DD-MM')];
+        if (dateTriggeredEvent) {
+            result = dateTriggeredEvent(status, context);
+            status = result.status;
+            context = result.context;
         }
+        status.date = status.date.add(1, 'day');
+        return { status, context };
     }
 };
-
-const day = {
-    simulate(status, actions, context){
-        const actionsResult = this.applyActions(status, actions, context);
-        const eventsArray = actionsResult.events;
-        status = actionsResult.status;
-        const eventsResult = this.todayEvents(status, actions, context);
-        eventsArray.push(...eventsResult.events);
-        const events = extractEvents(eventsArray);
-        return {
-            status,
-            events
-        }
-    },
-    applyActions(status, actions, context){
-        return {
-            status,
-            events: []
-        }
-    },
-    todayEvents(status, actions, context){
-        return {
-            status,
-            events: []
-        }
-    }
-};
-
-export {day};

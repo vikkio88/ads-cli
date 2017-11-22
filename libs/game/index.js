@@ -1,4 +1,6 @@
+import readline from 'readline-sync';
 import { ask } from './utils';
+import { day } from '../';
 
 export const game = {
     init() {
@@ -27,8 +29,27 @@ export const game = {
     },
 
     mainLoop(status, context) {
-        console.log(status);
-        console.log(context);
+        let command = '';
+        while (command !== 'quit') {
+            command = readline.prompt("> ");
+
+            if (command == 'status') {
+                console.log(status);
+            }
+
+            if (command == 'context') {
+                console.log(context);
+            }
+
+            if (command == 'next') {
+                const result = day.simulate(status, context);
+                status = result.status;
+                context = result.context;
+            }
+
+
+        }
+        game.quit();
     }
 
 };
