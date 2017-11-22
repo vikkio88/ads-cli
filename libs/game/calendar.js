@@ -1,12 +1,7 @@
+import moment from 'moment';
 import { fixtureGenerator } from '../generator'
 import { newsGenerator } from './news';
 import { DATE_FORMAT } from '../../const/index';
-
-export const triggerDates = {
-    '30-07': buildFixture,
-    '01-09': marketClose,
-};
-
 
 const buildFixture = (status, context) => {
     const thisYear = moment().format('YYYY');
@@ -25,22 +20,18 @@ const buildFixture = (status, context) => {
         }
     };
 
+    newsOfToday = newsGenerator.generate(
+        'New Season Calendar!',
+        `Presented the new match calendar for season ${thisYear}-${nextYear}`,
+        status.date.format(DATE_FORMAT)
+    );
     status = {
         ...status,
-        news: status.news.push(
-            newsGenerator.generate(
-                'New Season Calendar!',
-                `Presented the new match calendar for season ${thisYear}-${nextYear}`
-            )
-        )
-    }
+        news: [...status.news, newsOfToday]
+    };
+    return { status, context };
 
-    return {
-        status,
-        context
-    }
-
-}
+};
 
 const marketClose = (status, context) => {
     status = {
@@ -53,4 +44,10 @@ const marketClose = (status, context) => {
             )
         )
     }
-}
+};
+
+
+export const triggerDates = {
+    '30-07': buildFixture,
+    '01-09': marketClose,
+};

@@ -31,16 +31,14 @@ export const game = {
     mainLoop(status, context) {
         let command = '';
         while (command !== 'quit') {
-            command = readline.prompt("> ");
-
+            console.log(`DATE: ${status.date.format('DD-MM-YYYY')}`);
+            command = readline.prompt('> ');
             if (command == 'status') {
                 console.log(status);
             }
-
             if (command == 'context') {
                 console.log(context);
             }
-
             if (command == 'next') {
                 const result = day.simulate(status, context);
                 status = result.status;
