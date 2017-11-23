@@ -89,3 +89,13 @@ export const ask = {
         });
     }
 };
+
+export const newsHelper = {
+    setAllAsRead(news) {
+        return news.map(newsHelper.setAsRead)
+    },
+    setAsRead(singleNews) {
+        singleNews.read = true;
+        return singleNews;
+    }
+}

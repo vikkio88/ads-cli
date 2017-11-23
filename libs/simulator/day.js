@@ -1,9 +1,10 @@
+import moment from 'moment';
 import { triggerDates } from '../game/calendar';
+
 export const day = {
     simulate(status, context) {
-        
-        const today = status.date;
-        const dateTriggeredEvent = triggerDates[today.format('DD-MM')];
+        const today = moment(status.date);
+        const dateTriggeredEvent = triggerDates[today.add(1, 'day').format('DD-MM')];
         if (dateTriggeredEvent) {
             result = dateTriggeredEvent(status, context);
             status = result.status;

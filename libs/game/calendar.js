@@ -37,13 +37,15 @@ const marketClose = (status, context) => {
     status = {
         ...status,
         marketOpen: false,
-        news: status.news.push(
-            newsGenerator.generate(
-                'Transfer Market Closed!',
-                'Transfer Market officially closed'
-            )
-        )
-    }
+        news: [...status.news,
+        newsGenerator.generate(
+            'Transfer Market Closed!',
+            'Transfer Market officially closed',
+            status.date.format(DATE_FORMAT)
+        )]
+    };
+
+    return { status, context };
 };
 
 
