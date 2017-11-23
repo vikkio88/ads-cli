@@ -4,7 +4,8 @@ export const newsGenerator = {
             newspaper: 'Sport News',
             date,
             title,
-            message
+            message,
+            read: false
         }
     }
 };

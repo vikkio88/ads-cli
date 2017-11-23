@@ -1,7 +1,8 @@
 import readline from 'readline-sync';
 import { Clear } from 'clui';
-import { ask } from './utils';
+import { ask, newsHelper } from './utils';
 import { day } from '../';
+import { printNotifications } from './cli';
 
 export const game = {
     init() {
@@ -48,12 +49,20 @@ export const game = {
                     console.log(context[key]);
                 }
             },
+            news() {
+                console.log(status.news.filter(n => !n.read));
+                status.news = newsHelper.setAllAsRead(status.news);
+            },
+            messages() {
+                console.log(status.messages.filter(m => !m.read));
+            },
             next() {
                 Clear();
                 const result = day.simulate(status, context);
                 status = result.status;
                 context = result.context;
                 console.log(`DATE: ${status.date.format('DD-MM-YYYY')}`);
+                printNotifications(status)
             },
             exit() {
                 return true;
