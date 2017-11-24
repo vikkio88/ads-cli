@@ -10,6 +10,7 @@ const buildFixture = (status, context) => {
     const fixture = fixtureGenerator.generate(
         teams.list,
         moment(`02-08-${thisYear}`, DATE_FORMAT)
+        //moment(`26-08-${thisYear}`, DATE_FORMAT)
     );
 
     context = {
