@@ -25,3 +25,26 @@ export const printNotifications = (messages, news) => {
 
     console.log(message);
 }
+
+export const printNews = news => {
+    console.log(bold(news.title));
+    console.log(news.message);
+};
+
+export const printNewsList = (unreadNews, readNews) => {
+    console.log(bold("UNREAD NEWS"));
+    if (!unreadNews.length) {
+        console.log('-');
+    }
+    unreadNews.forEach(n => {
+        console.log(`${n.date} - ${bold(n.title)}`)
+    });
+    console.log(bold("READ NEWS"));
+    if (!readNews.length) {
+        console.log('-');
+    }
+    readNews.forEach(n => {
+        console.log(`${n.date} - ${link(n.title)}`)
+    });
+    console.log();
+};

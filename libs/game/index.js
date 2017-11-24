@@ -2,7 +2,7 @@ import readline from 'readline-sync';
 import { Clear } from 'clui';
 import { ask, newsHelper } from './utils';
 import { day } from '../';
-import { printNotifications, todayInfo } from './cli';
+import { printNotifications, todayInfo, printNews, printNewsList, error } from './cli';
 
 export const game = {
     init() {
@@ -50,8 +50,23 @@ export const game = {
                 }
             },
             news() {
-                console.log(status.news.filter(n => !n.read));
-                status.news = newsHelper.setAllAsRead(status.news);
+                const unreadNews = status.news.filter(n => !n.read);
+                const readNews = status.news.filter(n => n.read);
+                if (unreadNews.length || readNews.length) {
+                    printNewsList(unreadNews, readNews);
+                } else {
+                    console.log(error("No news"));
+                }
+            },
+            unreadNews() {
+                const unreadNews = status.news.filter(n => !n.read);
+                if (unreadNews.length) {
+                    latestUnread = unreadNews.pop();
+                    printNews(latestUnread);
+                    newsHelper.setAsRead(latestUnread);
+                } else {
+                    console.log(error("No unread news"));
+                }
             },
             messages() {
                 console.log(status.messages.filter(m => !m.read));
