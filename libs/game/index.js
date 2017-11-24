@@ -40,7 +40,6 @@ export const game = {
                 } else {
                     console.log(status[key]);
                 }
-
             },
             context(key = null) {
                 if (!key) {
@@ -50,15 +49,9 @@ export const game = {
                 }
             },
             news() {
-                const unreadNews = status.news.filter(n => !n.read);
-                const readNews = status.news.filter(n => n.read);
-                if (unreadNews.length || readNews.length) {
-                    printNewsList(unreadNews, readNews);
-                } else {
-                    console.log(error("No news"));
-                }
+                printNewsList(status.news);
             },
-            unreadNews() {
+            readNews() {
                 const unreadNews = status.news.filter(n => !n.read);
                 if (unreadNews.length) {
                     latestUnread = unreadNews.pop();
@@ -70,6 +63,9 @@ export const game = {
             },
             messages() {
                 console.log(status.messages.filter(m => !m.read));
+            },
+            n() {
+                game.mainLoop.next();
             },
             next() {
                 Clear();

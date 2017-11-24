@@ -31,15 +31,20 @@ export const printNews = news => {
     console.log(news.message);
 };
 
-export const printNewsList = (unreadNews, readNews) => {
+export const printNewsList = newsList => {
+    const unreadNews = newsList.filter(n => !n.read);
+    const readNews = newsList.filter(n => n.read);
     console.log(bold("UNREAD NEWS"));
+    console.log();
     if (!unreadNews.length) {
         console.log('-');
     }
     unreadNews.forEach(n => {
         console.log(`${n.date} - ${bold(n.title)}`)
     });
+    console.log();
     console.log(bold("READ NEWS"));
+    console.log();
     if (!readNews.length) {
         console.log('-');
     }
