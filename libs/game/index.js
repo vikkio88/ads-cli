@@ -2,7 +2,7 @@ import readline from 'readline-sync';
 import { Clear } from 'clui';
 import { ask, newsHelper } from './utils';
 import { day } from '../';
-import { printNotifications } from './cli';
+import { printNotifications, todayInfo } from './cli';
 
 export const game = {
     init() {
@@ -32,7 +32,7 @@ export const game = {
 
     mainLoop(status, context) {
         Clear();
-        console.log(`DATE: ${status.date.format('DD-MM-YYYY')}`);
+        todayInfo(status);
         readline.promptCLLoop({
             status(key = null) {
                 if (!key) {
@@ -61,8 +61,7 @@ export const game = {
                 const result = day.simulate(status, context);
                 status = result.status;
                 context = result.context;
-                console.log(`DATE: ${status.date.format('DD-MM-YYYY')}`);
-                printNotifications(status)
+                todayInfo(status);
             },
             exit() {
                 return true;
