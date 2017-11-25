@@ -5,6 +5,12 @@ export const link = chalkPipe('blue.underline');
 export const error = chalkPipe('bgRed.#cccccc');
 export const warning = chalkPipe('orange.bold');
 
+export const bgWhiteBlack = chalkPipe('bgWhite.black');
+export const bgRedWhite = chalkPipe('bgRedBright.white');
+
+export const orangeBold = chalkPipe('orange.bold');
+export const redBold = chalkPipe('red.bold');
+
 export const todayInfo = ({ date, messages, news }) => {
     console.log(`DATE: ${bold(date.format('DD-MM-YYYY'))}`);
     printNotifications(messages, news);
@@ -27,8 +33,14 @@ export const printNotifications = (messages, news) => {
 }
 
 export const printNews = news => {
+    console.log();
+    console.log(bold(bgRedWhite(news.newspaper)));
+    console.log("----------------");
     console.log(bold(news.title));
+    console.log("----------------");
+    console.log(bold(news.date));
     console.log(news.message);
+    console.log();
 };
 
 export const printNewsList = newsList => {
@@ -40,7 +52,7 @@ export const printNewsList = newsList => {
         console.log('-');
     }
     unreadNews.forEach(n => {
-        console.log(`${n.date} - ${bold(n.title)}`)
+        console.log(`${newsList.indexOf(n) + 1} - ${n.date} - ${bold(n.title)}`)
     });
     console.log();
     console.log(bold("READ NEWS"));
@@ -49,7 +61,7 @@ export const printNewsList = newsList => {
         console.log('-');
     }
     readNews.forEach(n => {
-        console.log(`${n.date} - ${link(n.title)}`)
+        console.log(`${newsList.indexOf(n) + 1} - ${n.date} - ${link(n.title)}`)
     });
     console.log();
 };
