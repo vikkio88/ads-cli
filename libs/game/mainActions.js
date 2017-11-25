@@ -16,15 +16,18 @@ export const mainActions = (status, context) => {
         },
         db(entity, action) {
             switch (entity) {
+                case 'ts':
                 case 'teams':
                     teamPrinter.teams(context.teams.list);
                     break;
+                case 't':
                 case 'team':
                     teamPrinter.team(context.teams.list, action);
                     break;
+                case 'l':
                 case 'league':
                     const {table, scorers} = context.league;
-                    if (action === 'table') {
+                    if (action === 'table' || action === 't') {
                         leaguePrinter.table(table);
                     } else if (action === 'scorers') {
                         leaguePrinter.scorers(scorers);
