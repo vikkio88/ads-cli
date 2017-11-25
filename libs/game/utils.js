@@ -5,7 +5,7 @@ import {nations} from '../../config/nationalities';
 import {generator} from '../generator';
 import {context, status} from './status';
 import {teamHelper} from '../';
-import {bold, error, printNews} from './cli';
+import {bold, error, printNews, ROW_LINE} from './cli';
 
 const mainMenuMapping = {
     'New Game': 'new',
@@ -112,6 +112,10 @@ export const newsHelper = {
 
 export const messageHelper = {};
 
+const tableOrdering = field => {
+    return (row1, row2) => row1[field] < row2[field] ? 1 : -1;
+};
+
 export const leaguePrinter = {
     table(table) {
         let orderedTable = [];
@@ -119,12 +123,13 @@ export const leaguePrinter = {
             orderedTable.push(table[t]);
         });
         console.log(bold('League Table'));
-        orderedTable = orderedTable.sort((r1, r2) => r1.points < r2.points);
+        console.log(ROW_LINE);
+        orderedTable = orderedTable.sort(tableOrdering('points'));
         orderedTable.forEach((r, index) => {
             console.log(
                 `${index + 1} - ${r.name} P ${bold(r.played)} W ${bold(r.won)} D ${bold(r.draw)} L ${bold(r.lost)} DG ${bold(r.goalsScored - r.goalsConceded)}  - ${bold(r.points)}`
             );
-            console.log('----------------------------------------------------');
+            console.log(ROW_LINE);
         });
     },
     scorers(scorers) {

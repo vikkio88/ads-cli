@@ -11,16 +11,18 @@ export const bgRedWhite = chalkPipe('bgRedBright.white');
 export const orangeBold = chalkPipe('orange.bold');
 export const redBold = chalkPipe('red.bold');
 
-export const todayInfo = ({ date, messages, news }) => {
+export const ROW_LINE = '----------------------------------------------------';
+
+export const todayInfo = ({date, messages, news}) => {
     console.log(`DATE: ${bold(date.format('DD-MM-YYYY'))}`);
     printNotifications(messages, news);
-}
+};
 
 
 export const printNotifications = (messages, news) => {
     const unreadMessages = messages.filter(m => !m.read).length;
     const unreadNews = news.filter(n => !n.read).length;
-    let message = ''
+    let message = '';
     if (unreadMessages) {
         message += `You got ${bold(unreadMessages)} unread mail\n`;
     }
@@ -30,7 +32,7 @@ export const printNotifications = (messages, news) => {
     }
 
     console.log(message);
-}
+};
 
 export const printNews = news => {
     console.log();
