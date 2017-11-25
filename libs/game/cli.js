@@ -12,6 +12,7 @@ export const orangeBold = chalkPipe('orange.bold');
 export const redBold = chalkPipe('red.bold');
 
 export const ROW_LINE = '----------------------------------------------------';
+export const SMALL_ROW_LINE = '----------------';
 
 export const todayInfo = ({date, messages, news}) => {
     console.log(`DATE: ${bold(date.format('DD-MM-YYYY'))}`);

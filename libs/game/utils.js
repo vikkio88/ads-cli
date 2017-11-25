@@ -5,7 +5,7 @@ import {nations} from '../../config/nationalities';
 import {generator} from '../generator';
 import {context, status} from './status';
 import {teamHelper} from '../';
-import {bold, error, printNews, ROW_LINE} from './cli';
+import {bold, error, printNews, ROW_LINE, SMALL_ROW_LINE} from './cli';
 
 const mainMenuMapping = {
     'New Game': 'new',
@@ -150,14 +150,16 @@ export const teamPrinter = {
         const selectedTeam = teams[index - 1];
         if (selectedTeam) {
             console.log();
+            console.log(SMALL_ROW_LINE);
             console.log(bold(selectedTeam.name));
             console.log(bold('Coach'));
             personPrinter.coach(selectedTeam.coach);
-            console.log('-------------');
+            console.log(SMALL_ROW_LINE);
             console.log(bold('Roster'));
             selectedTeam.roster.forEach(p => {
                 personPrinter.player(p);
             });
+            console.log(SMALL_ROW_LINE);
         } else {
             console.log(error(`No team with selected index ${index}`));
         }
