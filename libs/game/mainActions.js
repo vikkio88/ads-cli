@@ -7,6 +7,10 @@ export const mainActions = (status, context) => {
     Clear();
     todayInfo(status);
     return {
+        clear() {
+            Clear();
+            todayInfo(status);
+        },
         status(key = null) {
             if (!key) {
                 console.log(status);
