@@ -1,11 +1,11 @@
 import inquirer from 'inquirer';
 import {TEAM_NUMBER} from "../../const";
-import {LIST_TYPE, CONFIRM_TYPE, INPUT_TYPE} from "../../const/cli";
+import {CONFIRM_TYPE, INPUT_TYPE, LIST_TYPE} from "../../const/cli";
 import {nations} from '../../config/nationalities';
 import {generator} from '../generator';
-import {status, context} from './status';
+import {context, status} from './status';
 import {teamHelper} from '../';
-import {printNews, error} from './cli';
+import {bold, error, printNews} from './cli';
 
 const mainMenuMapping = {
     'New Game': 'new',
@@ -110,22 +110,64 @@ export const newsHelper = {
     }
 };
 
-export const messageHelper = {
-    read(news) {
-        const unreadNews = news.filter(n => !n.read);
-        if (unreadNews.length) {
-            latestUnread = unreadNews.pop();
-            printNews(latestUnread);
-            newsHelper.setAsRead(latestUnread);
-        } else {
-            console.log(error("No unread news"));
-        }
+export const messageHelper = {};
+
+export const leaguePrinter = {
+    table(table) {
+        let orderedTable = [];
+        Object.keys(table).forEach(t => {
+            orderedTable.push(table[t]);
+        });
+        console.log(bold('League Table'));
+        orderedTable = orderedTable.sort((r1, r2) => r1.points < r2.points);
+        orderedTable.forEach((r, index) => {
+            console.log(
+                `${index + 1} - ${r.name} P ${bold(r.played)} W ${bold(r.won)} D ${bold(r.draw)} L ${bold(r.lost)} DG ${bold(r.goalsScored - r.goalsConceded)}  - ${bold(r.points)}`
+            );
+            console.log('----------------------------------------------------');
+        });
     },
-    setAllAsRead(news) {
-        return news.map(newsHelper.setAsRead)
+    scorers(scorers) {
+        console.log(scorers);
     },
-    setAsRead(singleNews) {
-        singleNews.read = true;
-        return singleNews;
+    results(results) {
+        console.log(results);
     }
-}
+};
+
+export const teamPrinter = {
+    teams(teams) {
+        teams.forEach((t, index) => {
+            console.log(`${index + 1} - ${t.name}`);
+        });
+    },
+    team(teams, index) {
+        const selectedTeam = teams[index - 1];
+        if (selectedTeam) {
+            console.log();
+            console.log(bold(selectedTeam.name));
+            console.log(bold('Coach'));
+            personPrinter.coach(selectedTeam.coach);
+            console.log('-------------');
+            console.log(bold('Roster'));
+            selectedTeam.roster.forEach(p => {
+                personPrinter.player(p);
+            });
+        } else {
+            console.log(error(`No team with selected index ${index}`));
+        }
+    }
+};
+
+const personPrinter = {
+    coach(coach) {
+        console.log(
+            `${coach.name} ${coach.surname} (${coach.age}) (${coach.nationality})`
+        );
+    },
+    player(player) {
+        console.log(
+            `${player.position} - ${player.name} ${player.surname} (${player.age}) (${player.nationality})`
+        );
+    }
+};

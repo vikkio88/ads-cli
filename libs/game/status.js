@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { DATE_FORMAT_GAP } from '../../const';
+import {DATE_FORMAT_GAP} from '../../const';
 
 export const status = {
     player: null,
@@ -30,4 +30,4 @@ export const context = {
         fixture: [],
         scorers: {}
     }
-}
+};

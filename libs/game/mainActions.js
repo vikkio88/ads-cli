@@ -1,6 +1,6 @@
-import {printNewsList, todayInfo} from './cli';
+import {error, printNewsList, todayInfo} from './cli';
 import {Clear} from 'clui';
-import {newsHelper} from "./utils";
+import {leaguePrinter, newsHelper, teamPrinter} from "./utils";
 import {day} from "../simulator/day";
 
 export const mainActions = (status, context) => {
@@ -14,11 +14,26 @@ export const mainActions = (status, context) => {
                 console.log(status[key]);
             }
         },
-        context(key = null) {
-            if (!key) {
-                console.log(context);
-            } else {
-                console.log(context[key]);
+        db(entity, action) {
+            switch (entity) {
+                case 'teams':
+                    teamPrinter.teams(context.teams.list);
+                    break;
+                case 'team':
+                    teamPrinter.team(context.teams.list, action);
+                    break;
+                case 'league':
+                    const {table, scorers} = context.league;
+                    if (action === 'table') {
+                        leaguePrinter.table(table);
+                    } else if (action === 'scorers') {
+                        leaguePrinter.scorers(scorers);
+                    }
+                    break;
+                case 'market':
+                    break;
+                default:
+                    console.log(error(`wrong command ${entity} ${action}`))
             }
         },
         news() {
@@ -30,6 +45,9 @@ export const mainActions = (status, context) => {
                     newsHelper.read(status.news, index);
                     break;
                 case 'messages':
+                    break;
+                default:
+                    console.log(error(`no ${type} to read`));
                     break;
             }
         },
