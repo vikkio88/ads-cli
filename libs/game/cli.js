@@ -1,4 +1,5 @@
 import chalkPipe from 'chalk-pipe';
+import moment from "moment";
 
 const FULL_STAR = '★';
 const EMPTY_STAR = '☆';
@@ -40,7 +41,7 @@ export const ROW_LINE = '----------------------------------------------------';
 export const SMALL_ROW_LINE = '----------------';
 
 export const todayInfo = ({date, messages, news}) => {
-    console.log(`DATE: ${bold(date.format('DD-MM-YYYY'))}`);
+    console.log(`DATE: ${bold(moment(date).format('DD-MM-YYYY'))}`);
     printNotifications(messages, news);
 };
 

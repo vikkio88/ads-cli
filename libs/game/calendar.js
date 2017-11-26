@@ -1,12 +1,12 @@
 import moment from 'moment';
-import { fixtureGenerator } from '../generator'
-import { newsGenerator } from './news';
-import { DATE_FORMAT } from '../../const/index';
+import {fixtureGenerator} from '../generator'
+import {newsGenerator} from './news';
+import {DATE_FORMAT} from '../../const/index';
 
 const buildFixture = (status, context) => {
     const thisYear = moment().format('YYYY');
     const nextYear = moment().add(1, 'year').format('YYYY');
-    const { teams } = context;
+    const {teams} = context;
     const fixture = fixtureGenerator.generate(
         teams.list,
         moment(`02-08-${thisYear}`, DATE_FORMAT)
@@ -21,16 +21,16 @@ const buildFixture = (status, context) => {
         }
     };
 
-    newsOfToday = newsGenerator.generate(
+    const newsOfToday = newsGenerator.generate(
         'New Season Calendar!',
         `Presented the new match calendar for season ${thisYear}-${nextYear}`,
-        status.date.format(DATE_FORMAT)
+        moment(status.date).format(DATE_FORMAT)
     );
     status = {
         ...status,
         news: [...status.news, newsOfToday]
     };
-    return { status, context };
+    return {status, context};
 
 };
 
@@ -39,14 +39,14 @@ const marketClose = (status, context) => {
         ...status,
         marketOpen: false,
         news: [...status.news,
-        newsGenerator.generate(
-            'Transfer Market Closed!',
-            'Transfer Market officially closed',
-            status.date.format(DATE_FORMAT)
-        )]
+            newsGenerator.generate(
+                'Transfer Market Closed!',
+                'Transfer Market officially closed',
+                moment(status.date).format(DATE_FORMAT)
+            )]
     };
 
-    return { status, context };
+    return {status, context};
 };
 
 

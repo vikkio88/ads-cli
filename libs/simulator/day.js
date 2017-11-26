@@ -40,7 +40,7 @@ export const day = {
         if (noMoreGamesToPlay(league.fixture)) {
 
         }
-        status.date = status.date.add(1, 'day');
+        status.date = moment(status.date).add(1, 'day').format();
         return {status, context};
     }
 };

@@ -4,6 +4,7 @@ import {teamHelper} from './teamHelper';
 import {round} from '../';
 import {newsGenerator} from '../game/news';
 import {DATE_FORMAT} from '../../const';
+import moment from "moment";
 
 const LOSER_MODIFIERS = {
     decreases: [
@@ -124,7 +125,7 @@ const leagueHelper = {
         return teamHelper.objectToTeamArray(teams);
     },
     simulateDay({table, fixture, scorers}, teams, date) {
-        const todayRound = fixture.filter(r => r.date.isSame(date)).pop();
+        const todayRound = fixture.filter(r => moment(r.date).isSame(date)).pop();
         if (todayRound) {
             const results = round.simulate(todayRound.matches, teams.list);
             leagueHelper.parseRoundResults(results, table);

@@ -1,5 +1,6 @@
 import moment from 'moment';
-import { DATE_FORMAT } from '../../const';
+import {DATE_FORMAT} from '../../const';
+
 const fixtureGenerator = {
     generate(teams = [], startDate = moment()) {
         const numberOfTeams = teams.length;
@@ -16,18 +17,18 @@ const fixtureGenerator = {
                 if (match === 0) {
                     away = numberOfTeams - 1;
                 }
-                tempRoundFirstHalf.push({ home: teams[home].name, away: teams[away].name });
-                tempRoundSecondHalf.push({ home: teams[away].name, away: teams[home].name });
+                tempRoundFirstHalf.push({home: teams[home].name, away: teams[away].name});
+                tempRoundSecondHalf.push({home: teams[away].name, away: teams[home].name});
             }
             firstHalf.push({
                 index: round,
-                date: moment(startDate).add(round, 'week'),
+                date: moment(startDate).add(round, 'week').format(),
                 matches: tempRoundFirstHalf,
                 played: false
             });
             secondHalf.push({
                 index: round + totalRounds,
-                date: moment(startDate).add(round + totalRounds, 'week'),
+                date: moment(startDate).add(round + totalRounds, 'week').format(),
                 matches: tempRoundSecondHalf,
                 played: false
             });
@@ -36,4 +37,4 @@ const fixtureGenerator = {
     }
 };
 
-export { fixtureGenerator }
+export {fixtureGenerator}
