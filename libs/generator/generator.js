@@ -13,33 +13,36 @@ const SKILL_RANGE = [40, 100];
 
 
 const generator = {
-    teamName(nationality = 'it'){
+    newspaper(nationality = 'it') {
+        return faker.newspaper(nationality);
+    },
+    teamName(nationality = 'it') {
         return format(randomizer.pickOne(teamNames), faker.city(nationality));
     },
-    playerAge(){
+    playerAge() {
         return randomizer.int(PLAYER_AGE_RANGE[0], PLAYER_AGE_RANGE[1]);
     },
-    coachAge(){
+    coachAge() {
         return randomizer.int(COACH_AGE_RANGE[0], COACH_AGE_RANGE[1]);
     },
-    skill(){
+    skill() {
         return randomizer.int(SKILL_RANGE[0], SKILL_RANGE[1]);
     },
-    position(){
+    position() {
         return randomizer.pickOne(positions);
     },
-    module(){
+    module() {
         return randomizer.pickOne(modules);
     },
-    nationality(){
+    nationality() {
         return randomizer.pickOne(nationalities);
     },
-    status(){
+    status() {
         return {
             morale: randomizer.int(10, 100)
         }
     },
-    statusModifiers(){
+    statusModifiers() {
         return {
             decreases: [
                 {
@@ -55,7 +58,7 @@ const generator = {
             ]
         };
     },
-    person(locale){
+    person(locale) {
         return {
             name: faker.name(locale),
             surname: faker.surname(locale),
@@ -63,7 +66,7 @@ const generator = {
             contract: randomizer.int(1, 5)
         }
     },
-    coach(forcedValues = {}){
+    coach(forcedValues = {}) {
         const locale = forcedValues.nationality || 'it';
         const person = this.person(locale);
 
@@ -81,7 +84,7 @@ const generator = {
             ...forcedValues
         }
     },
-    player(forcedValues = {}){
+    player(forcedValues = {}) {
         const locale = forcedValues.nationality || 'it';
         const person = this.person(locale);
         const position = this.position();
@@ -101,10 +104,10 @@ const generator = {
             ...forcedValues
         }
     },
-    players(number = 10, forcedValues = {}){
+    players(number = 10, forcedValues = {}) {
         return range(number).map(_ => this.player(forcedValues));
     },
-    team(forcedValues = {}){
+    team(forcedValues = {}) {
         const rosterSize = randomizer.int(18, 29);
         const name = this.teamName(nationality);
         const mostPlayers = Math.round(rosterSize * (1 - 0.8));
@@ -125,7 +128,7 @@ const generator = {
             roster
         }
     },
-    teams(number = 8, forcedValues = {}){
+    teams(number = 8, forcedValues = {}) {
         return range(number).map(() => this.team(forcedValues));
     }
 };

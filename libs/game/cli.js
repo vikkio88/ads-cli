@@ -36,13 +36,14 @@ export const printNotifications = (messages, news) => {
 };
 
 export const printNews = news => {
-    console.log();
+    console.log(SMALL_ROW_LINE);
     console.log(bold(bgRedWhite(news.newspaper)));
-    console.log("----------------");
+    console.log(SMALL_ROW_LINE);
     console.log(bold(news.title));
-    console.log("----------------");
+    console.log(SMALL_ROW_LINE);
     console.log(bold(news.date));
     console.log(news.message);
+    console.log(SMALL_ROW_LINE);
     console.log();
 };
 

@@ -1,7 +1,9 @@
+import {generator} from "../generator/generator";
+
 export const newsGenerator = {
     generate(title, message, date) {
         return {
-            newspaper: 'Sport News',
+            newspaper: generator.newspaper(),
             date,
             title,
             message,
