@@ -5,7 +5,11 @@ import {nations} from '../../config/nationalities';
 import {generator} from '../generator';
 import {context, status} from './status';
 import {teamHelper} from '../';
-import {bold, error, link, moraleToEmoji, percentageToStar, printNews, ROW_LINE, SMALL_ROW_LINE} from './cli';
+import {
+    bold, error, link,
+    moraleToEmoji, percentageToStar, printNews,
+    ROW_LINE, SMALL_ROW_LINE
+} from './cli';
 
 const MAX_SCORERS = 10;
 const mainMenuMapping = {
@@ -128,7 +132,7 @@ export const leaguePrinter = {
         orderedTable = orderedTable.sort(tableOrdering('points'));
         orderedTable.forEach((r, index) => {
             console.log(
-                `${index + 1} - ${r.name} P ${bold(r.played)} W ${bold(r.won)} D ${bold(r.draw)} L ${bold(r.lost)} DG ${bold(r.goalsScored - r.goalsConceded)}  - ${bold(r.points)}`
+                `${index + 1} - ${link(r.name)} P ${bold(r.played)} W ${bold(r.won)} D ${bold(r.draw)} L ${bold(r.lost)} DG ${bold(r.goalsScored - r.goalsConceded)}  - ${bold(r.points)}`
             );
             console.log(ROW_LINE);
         });
