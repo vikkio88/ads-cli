@@ -2,7 +2,7 @@ import {teamHelper} from '../helpers';
 import {randomizer} from '../generator/randomizer';
 
 const match = {
-    simulate(homeTeam, awayTeam){
+    simulate(homeTeam, awayTeam) {
         let homeGoal = 0;
         let awayGoal = 0;
         let isDraw = false;
@@ -52,7 +52,7 @@ const match = {
         awayGoal = awayGoal < 0 ? 0 : awayGoal;
 
 
-        if (homeGoal < awayTeam) {
+        if (homeGoal < awayGoal) {
             loser = homeTeam.name;
             winner = awayTeam.name;
         }
@@ -72,12 +72,12 @@ const match = {
             scorers
         }
     },
-    points(team){
+    points(team) {
         let points = teamHelper.averageSkill(team);
         points += this.malusModule(teamHelper.canPlayModule(team));
         return points;
     },
-    scorers(homeTeam, awayTeam, homeGoal, awayGoal){
+    scorers(homeTeam, awayTeam, homeGoal, awayGoal) {
         const home = teamHelper.scorers(homeTeam, homeGoal);
         const away = teamHelper.scorers(awayTeam, awayGoal);
         return {
@@ -85,24 +85,24 @@ const match = {
             away
         }
     },
-    bonusAge(team){
+    bonusAge(team) {
         const avgAge = teamHelper.averageAge(team);
         if (avgAge < 23 || avgAge > 33) {
             return this.fluke();
         }
         return 0;
     },
-    bonusHome(){
+    bonusHome() {
         return randomizer.chance(66) ? 1 : 0;
     },
-    malusModule(teamCanPlay){
+    malusModule(teamCanPlay) {
         const modifier = randomizer.int(1, 10);
         if (!teamCanPlay) {
             return -1 * modifier;
         }
         return modifier;
     },
-    fluke(){
+    fluke() {
         return randomizer.int(0, 3);
     }
 };

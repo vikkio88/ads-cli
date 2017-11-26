@@ -242,6 +242,23 @@ describe('teamHelper tests', () => {
 });
 
 describe('leagueHelper tests', () => {
+    test.skip('it calculates correctly the table after each round', () => {
+        const teams = generator.teams(2);
+        const fixture = fixtureGenerator.generate(teams);
+        console.log(fixture);
+        let table = teamHelper.createCleanTable(teams);
+        fixture.forEach(r => {
+            const results = round.simulate(r.matches, teams);
+            leagueHelper.parseRoundResults(results, table);
+            let resultLine = '';
+            results.forEach(r => resultLine += `${r.home} - ${r.away} ${r.homeGoal} ${r.awayGoal}  (${r.winner})\n`);
+            resultLine += '\ntable\n';
+            Object.keys(table).forEach(k => {
+                resultLine += `${table[k].name} ${table[k].points}\n`;
+            });
+            console.log(resultLine);
+        });
+    });
     test('it calculates correctly the new table and scorers given round results', () => {
         const teams = generator.teams(2);
         const fixture = fixtureGenerator.generate(teams);
