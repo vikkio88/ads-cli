@@ -1,5 +1,20 @@
 import chalkPipe from 'chalk-pipe';
 
+const FULL_STAR = '★';
+const EMPTY_STAR = '☆';
+const PERCENT = 100;
+const NUMBER_OF_STARS = 5;
+
+const MORALE = [
+    '😃',
+    '😄',
+    '😊',
+    '😒',
+    '😖',
+    '😞',
+    '😤',
+];
+
 export const bold = chalkPipe('bold');
 export const link = chalkPipe('blue.underline');
 export const error = chalkPipe('bgRed.#cccccc');
@@ -68,4 +83,15 @@ export const printNewsList = newsList => {
         console.log(`${newsList.indexOf(n) + 1} - ${n.date} - ${link(n.title)}`)
     });
     console.log();
+};
+
+export const percentageToStar = percentage => {
+    const fullStars = Math.round(percentage * NUMBER_OF_STARS / PERCENT);
+    return `${FULL_STAR.repeat(fullStars)}${EMPTY_STAR.repeat(NUMBER_OF_STARS - fullStars)}`;
+};
+
+export const moraleToEmoji = morale => {
+    const moraleCount = MORALE.length;
+    const emojiIndex = Math.min(Math.round(morale * moraleCount / PERCENT), moraleCount - 1);
+    return MORALE.reverse()[emojiIndex];
 };

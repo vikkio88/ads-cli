@@ -5,7 +5,7 @@ import {nations} from '../../config/nationalities';
 import {generator} from '../generator';
 import {context, status} from './status';
 import {teamHelper} from '../';
-import {bold, error, link, printNews, ROW_LINE, SMALL_ROW_LINE} from './cli';
+import {bold, error, link, moraleToEmoji, percentageToStar, printNews, ROW_LINE, SMALL_ROW_LINE} from './cli';
 
 const MAX_SCORERS = 10;
 const mainMenuMapping = {
@@ -172,10 +172,12 @@ export const teamPrinter = {
             personPrinter.coach(selectedTeam.coach);
             console.log(SMALL_ROW_LINE);
             console.log(bold('Roster'));
+            console.log(ROW_LINE);
             selectedTeam.roster.forEach(p => {
                 personPrinter.player(p);
+                console.log(ROW_LINE);
             });
-            console.log(SMALL_ROW_LINE);
+            console.log();
         } else {
             console.log(error(`No team with selected index ${index}`));
         }
@@ -188,12 +190,10 @@ const personPrinter = {
     },
     coach(coach) {
         console.log(
-            `${coach.name} ${coach.surname} (${coach.age}) (${coach.nationality})`
+            `${coach.name} ${coach.surname} (${coach.age}) (${coach.nationality}) ${percentageToStar(coach.skill)}`
         );
     },
     player(player) {
-        console.log(
-            `${player.position} - ${player.name} ${player.surname} (${player.age}) (${player.nationality})`
-        );
+        console.log(`${player.position} - ${bold(player.name)} ${bold(player.surname)} (${player.age}) (${player.nationality}) Morale: ${moraleToEmoji(player.status.morale)}  Skill: ${percentageToStar(player.skill)}`);
     }
 };
