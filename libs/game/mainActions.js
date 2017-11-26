@@ -40,7 +40,7 @@ export const mainActions = (status, context) => {
                 case 'market':
                     break;
                 default:
-                    console.log(error(`wrong command ${entity} ${action}`))
+                    console.log(error(`wrong command ${entity} ${action}`));
             }
         },
         news() {

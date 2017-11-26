@@ -5,8 +5,9 @@ import {nations} from '../../config/nationalities';
 import {generator} from '../generator';
 import {context, status} from './status';
 import {teamHelper} from '../';
-import {bold, error, printNews, ROW_LINE, SMALL_ROW_LINE} from './cli';
+import {bold, error, link, printNews, ROW_LINE, SMALL_ROW_LINE} from './cli';
 
+const MAX_SCORERS = 10;
 const mainMenuMapping = {
     'New Game': 'new',
     'Load': 'load',
@@ -133,7 +134,22 @@ export const leaguePrinter = {
         });
     },
     scorers(scorers) {
-        console.log(scorers);
+        let orderedTable = [];
+        Object.keys(scorers).forEach(p => {
+            orderedTable.push(scorers[p]);
+        });
+        orderedTable = orderedTable.sort(tableOrdering('goals'));
+
+        if (orderedTable.length > MAX_SCORERS) {
+            orderedTable = orderedTable.slice(0, MAX_SCORERS);
+        }
+        console.log(bold('League Scorers Table'));
+        console.log(ROW_LINE);
+        orderedTable.forEach((r, index) => {
+            const {player} = r;
+            console.log(`${index + 1} - ${player.name} ${player.surname} - ${link(r.team)} - ${bold(r.goals)}`);
+            console.log(ROW_LINE);
+        });
     },
     results(results) {
         console.log(results);
@@ -167,6 +183,9 @@ export const teamPrinter = {
 };
 
 const personPrinter = {
+    person(person) {
+        console.log(`${person.name} ${person.surname}`);
+    },
     coach(coach) {
         console.log(
             `${coach.name} ${coach.surname} (${coach.age}) (${coach.nationality})`
