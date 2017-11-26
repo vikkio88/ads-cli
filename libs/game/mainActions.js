@@ -3,7 +3,7 @@ import {Clear} from 'clui';
 import {leaguePrinter, newsHelper, teamPrinter} from "./utils";
 import {day} from "../simulator/day";
 
-export const mainActions = (status, context) => {
+export const mainActions = (status, context, game) => {
     Clear();
     todayInfo(status);
     return {
@@ -88,6 +88,9 @@ export const mainActions = (status, context) => {
             status = result.status;
             context = result.context;
             todayInfo(status);
+        },
+        save() {
+            game.save({status, context});
         },
         exit() {
             return true;
