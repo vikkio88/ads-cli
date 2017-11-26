@@ -2,7 +2,7 @@ import {match} from './match';
 import {teamHelper} from '../helpers';
 
 const round = {
-    simulate(matches, teams){
+    simulate(matches, teams) {
         const teamsObject = teamHelper.teamsToObject(teams);
         const results = [];
         matches.forEach(m => {

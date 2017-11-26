@@ -30,12 +30,28 @@ export const mainActions = (status, context) => {
                     break;
                 case 'l':
                 case 'league':
-                    const {table, scorers} = context.league;
-                    if (action === 'table' || action === 't') {
-                        leaguePrinter.table(table);
-                    } else if (action === 'scorers') {
-                        leaguePrinter.scorers(scorers);
+                    const {table, scorers, fixture} = context.league;
+                    switch (action) {
+                        case 't':
+                        case 'table':
+                            leaguePrinter.table(table);
+                            break;
+                        case 's':
+                        case 'scorers':
+                            leaguePrinter.scorers(scorers);
+                            break;
+                        case 'f':
+                        case 'fixture':
+                            leaguePrinter.fixture(fixture);
+                            break;
+                        case 'r':
+                        case 'results':
+                            leaguePrinter.results(fixture);
+                            break;
+                        default:
+                            console.log(error(`invalid action on League ${action}`));
                     }
+
                     break;
                 case 'market':
                     break;
@@ -43,13 +59,14 @@ export const mainActions = (status, context) => {
                     console.log(error(`wrong command ${entity} ${action}`));
             }
         },
-        news() {
-            printNewsList(status.news);
-        },
         read(type, index) {
             switch (type) {
                 case 'news':
-                    newsHelper.read(status.news, index);
+                    if (index) {
+                        newsHelper.read(status.news, index);
+                    } else {
+                        printNewsList(status.news);
+                    }
                     break;
                 case 'messages':
                     break;
@@ -57,9 +74,6 @@ export const mainActions = (status, context) => {
                     console.log(error(`no ${type} to read`));
                     break;
             }
-        },
-        messages() {
-            console.log(status.messages.filter(m => !m.read));
         },
         n() {
             Clear();

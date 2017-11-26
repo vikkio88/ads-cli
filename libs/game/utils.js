@@ -10,6 +10,8 @@ import {
     moraleToEmoji, percentageToStar, printNews,
     ROW_LINE, SMALL_ROW_LINE
 } from './cli';
+import {round} from "../simulator/round";
+import {DATE_FORMAT} from "../../const/index";
 
 const MAX_SCORERS = 10;
 const mainMenuMapping = {
@@ -155,8 +157,26 @@ export const leaguePrinter = {
             console.log(ROW_LINE);
         });
     },
-    results(results) {
-        console.log(results);
+    fixture(fixture) {
+        fixture.filter(r => !r.played).forEach(round => {
+            console.log(bold(`Round ${round.index + 1} - ${round.date.format(DATE_FORMAT)}`));
+            round.matches.forEach(m => {
+                console.log(`${m.home} - ${m.away}`);
+            });
+            console.log(SMALL_ROW_LINE);
+            console.log();
+        });
+    },
+    results(fixture) {
+        const playedRounds = fixture.filter(r => r.played);
+        playedRounds.forEach(round => {
+            console.log(bold(`Round ${round.index + 1} - ${round.date.format(DATE_FORMAT)}`));
+            round.results.forEach(m => {
+                console.log(`${m.home} - ${m.away} ${m.homeGoal} - ${m.awayGoal}`);
+            });
+            console.log(SMALL_ROW_LINE);
+            console.log();
+        });
     }
 };
 

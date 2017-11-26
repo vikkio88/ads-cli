@@ -1,9 +1,9 @@
-import { generator } from '../generator';
-import { playerHelper } from './playerHelper';
-import { teamHelper } from './teamHelper';
-import { round } from '../';
-import { newsGenerator } from '../game/news';
-import { DATE_FORMAT } from '../../const';
+import {generator} from '../generator';
+import {playerHelper} from './playerHelper';
+import {teamHelper} from './teamHelper';
+import {round} from '../';
+import {newsGenerator} from '../game/news';
+import {DATE_FORMAT} from '../../const';
 
 const LOSER_MODIFIERS = {
     decreases: [
@@ -70,7 +70,7 @@ const leagueHelper = {
     },
     parseScorers(results, oldScorers) {
         results.forEach(r => {
-            const { home, away, scorers } = r;
+            const {home, away, scorers} = r;
             scorers.home.forEach(s => {
                 const playerKey = `${s.name}${s.surname}`;
                 if (oldScorers[playerKey]) {
@@ -123,13 +123,14 @@ const leagueHelper = {
 
         return teamHelper.objectToTeamArray(teams);
     },
-    simulateDay({ table, fixture, scorers }, teams, date) {
-        todayRound = fixture.filter(r => r.date.isSame(date)).pop();
+    simulateDay({table, fixture, scorers}, teams, date) {
+        const todayRound = fixture.filter(r => r.date.isSame(date)).pop();
         if (todayRound) {
             const results = round.simulate(todayRound.matches, teams.list);
             leagueHelper.parseRoundResults(results, table);
             leagueHelper.parseScorers(results, scorers);
             todayRound.played = true;
+            todayRound.results = results;
             let resultString = '';
             results.forEach(r => {
                 resultString += `\n${r.home} - ${r.away} ${r.homeGoal} - ${r.awayGoal}`
@@ -149,4 +150,4 @@ const leagueHelper = {
     }
 };
 
-export { leagueHelper };
+export {leagueHelper};
