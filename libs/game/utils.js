@@ -1,4 +1,5 @@
 import inquirer from 'inquirer';
+import readline from 'readline-sync';
 import {TEAM_NUMBER} from "../../const";
 import {CONFIRM_TYPE, INPUT_TYPE, LIST_TYPE} from "../../const/cli";
 import {nations} from '../../config/nationalities';
@@ -10,7 +11,6 @@ import {
     moraleToEmoji, percentageToStar, printNews,
     ROW_LINE, SMALL_ROW_LINE
 } from './cli';
-import {round} from "../simulator/round";
 import {DATE_FORMAT} from "../../const/index";
 
 const MAX_SCORERS = 10;
@@ -158,24 +158,32 @@ export const leaguePrinter = {
         });
     },
     fixture(fixture) {
-        fixture.filter(r => !r.played).forEach(round => {
+        if (!fixture.length) {
+            console.log(error("Fixture for the next season are not available yet"));
+        }
+        fixture.filter(r => !r.played).some(round => {
             console.log(bold(`Round ${round.index + 1} - ${round.date.format(DATE_FORMAT)}`));
             round.matches.forEach(m => {
                 console.log(`${m.home} - ${m.away}`);
             });
             console.log(SMALL_ROW_LINE);
             console.log();
+            return !readline.keyInYN('Continue?');
         });
     },
     results(fixture) {
         const playedRounds = fixture.filter(r => r.played);
-        playedRounds.forEach(round => {
+        if (!playedRounds.length) {
+            console.log(error("No games played yet"));
+        }
+        playedRounds.some(round => {
             console.log(bold(`Round ${round.index + 1} - ${round.date.format(DATE_FORMAT)}`));
             round.results.forEach(m => {
                 console.log(`${m.home} - ${m.away} ${m.homeGoal} - ${m.awayGoal}`);
             });
             console.log(SMALL_ROW_LINE);
             console.log();
+            return !readline.keyInYN('Continue?');
         });
     }
 };
