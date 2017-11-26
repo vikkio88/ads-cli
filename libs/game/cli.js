@@ -15,6 +15,16 @@ const MORALE = [
     '😤',
 ];
 
+const MORALE_COLOURS = [
+    chalkPipe('greenBright'),
+    chalkPipe('green'),
+    chalkPipe('white'),
+    chalkPipe('yellow'),
+    chalkPipe('orange'),
+    chalkPipe('redBright'),
+    chalkPipe('red')
+];
+
 export const bold = chalkPipe('bold');
 export const link = chalkPipe('blue.underline');
 export const error = chalkPipe('bgRed.#cccccc');
@@ -87,11 +97,13 @@ export const printNewsList = newsList => {
 
 export const percentageToStar = percentage => {
     const fullStars = Math.round(percentage * NUMBER_OF_STARS / PERCENT);
-    return `${FULL_STAR.repeat(fullStars)}${EMPTY_STAR.repeat(NUMBER_OF_STARS - fullStars)}`;
+    return bold(`${FULL_STAR.repeat(fullStars)}${EMPTY_STAR.repeat(NUMBER_OF_STARS - fullStars)}`);
 };
 
 export const moraleToEmoji = morale => {
     const moraleCount = MORALE.length;
     const emojiIndex = Math.min(Math.round(morale * moraleCount / PERCENT), moraleCount - 1);
-    return MORALE.reverse()[emojiIndex];
+    return MORALE_COLOURS.reverse()[emojiIndex](
+        MORALE.reverse()[emojiIndex]
+    );
 };

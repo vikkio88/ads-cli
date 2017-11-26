@@ -1,8 +1,21 @@
 import moment from 'moment';
 import {triggerDates} from '../game/calendar';
 import {leagueHelper} from '../helpers';
+import trigger from "./events/trigger";
 
 const noMoreGamesToPlay = fixture => fixture.filter(r => !r.played).length === 0;
+const appendNews = (status, news) => {
+    status.news = [
+        ...status.news,
+        ...news
+    ];
+};
+const appendMessages = (status, messages) => {
+    status.messages = [
+        ...status.messages,
+        ...messages
+    ];
+};
 
 export const day = {
     simulate(status, context) {
@@ -16,12 +29,13 @@ export const day = {
         }
 
         const league = context.league;
-        status.news = [
-            ...status.news,
-            ...leagueHelper.simulateDay(league, context.teams, today)
-        ];
+        appendNews(status, leagueHelper.simulateDay(league, context.teams, today));
 
-        tri
+        trigger(status, context).forEach(event => {
+            const {news, messages} = event(status, context);
+            appendNews(status, news);
+            appendMessages(status, messages);
+        });
 
         if (noMoreGamesToPlay(league.fixture)) {
 
