@@ -75,7 +75,6 @@ export const ask = {
         let player = {};
         inquirer.prompt(questions).then(answers => {
             player = {...answers};
-            console.log("Generating Teams...");
             const teams = generator.teams(TEAM_NUMBER);
             mainLoop(
                 {

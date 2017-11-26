@@ -1,6 +1,8 @@
 import moment from 'moment';
-import { triggerDates } from '../game/calendar';
-import { leagueHelper } from '../helpers';
+import {triggerDates} from '../game/calendar';
+import {leagueHelper} from '../helpers';
+
+const noMoreGamesToPlay = fixture => fixture.filter(r => !r.played).length === 0;
 
 export const day = {
     simulate(status, context) {
@@ -8,7 +10,7 @@ export const day = {
         const dateTriggeredEvent = triggerDates[today.add(1, 'day').format('DD-MM')];
 
         if (dateTriggeredEvent) {
-            result = dateTriggeredEvent(status, context);
+            const result = dateTriggeredEvent(status, context);
             status = result.status;
             context = result.context;
         }
@@ -18,7 +20,13 @@ export const day = {
             ...status.news,
             ...leagueHelper.simulateDay(league, context.teams, today)
         ];
+
+        tri
+
+        if (noMoreGamesToPlay(league.fixture)) {
+
+        }
         status.date = status.date.add(1, 'day');
-        return { status, context };
+        return {status, context};
     }
 };
