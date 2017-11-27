@@ -1,3 +1,3 @@
-export default (status, context) => {
+export default (today, status, context) => {
     return [];
 };

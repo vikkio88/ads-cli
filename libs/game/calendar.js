@@ -16,6 +16,7 @@ const buildFixture = (status, context) => {
     context = {
         ...context,
         league: {
+            name: `Serie A ${thisYear}-${nextYear}`,
             ...context.league,
             fixture
         }
@@ -23,7 +24,7 @@ const buildFixture = (status, context) => {
 
     const news = newsGenerator.generate(
         'New Season Calendar!',
-        `Presented the new match calendar for season ${thisYear}-${nextYear}`,
+        `Presented the new match calendar for ${context.league.name}`,
         moment(status.date).format(DATE_FORMAT)
     );
 
