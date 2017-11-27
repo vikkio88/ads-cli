@@ -1,5 +1,6 @@
 import inquirer from 'inquirer';
 import readline from 'readline-sync';
+import moment from 'moment';
 import {TEAM_NUMBER} from "../../const";
 import {CONFIRM_TYPE, INPUT_TYPE, LIST_TYPE} from "../../const/cli";
 import {nations} from '../../config/nationalities';
@@ -161,7 +162,7 @@ export const leaguePrinter = {
             console.log(error("Fixture for the next season are not available yet"));
         }
         fixture.filter(r => !r.played).some(round => {
-            console.log(bold(`Round ${round.index + 1} - ${round.date.format(DATE_FORMAT)}`));
+            console.log(bold(`Round ${round.index + 1} - ${moment(round.date).format(DATE_FORMAT)}`));
             round.matches.forEach(m => {
                 console.log(`${m.home} - ${m.away}`);
             });
@@ -176,7 +177,7 @@ export const leaguePrinter = {
             console.log(error("No games played yet"));
         }
         playedRounds.some(round => {
-            console.log(bold(`Round ${round.index + 1} - ${round.date.format(DATE_FORMAT)}`));
+            console.log(bold(`Round ${round.index + 1} - ${moment(round.date).format(DATE_FORMAT)}`));
             round.results.forEach(m => {
                 console.log(`${m.home} - ${m.away} ${m.homeGoal} - ${m.awayGoal}`);
             });
