@@ -21,32 +21,29 @@ const buildFixture = (status, context) => {
         }
     };
 
-    const newsOfToday = newsGenerator.generate(
+    const news = newsGenerator.generate(
         'New Season Calendar!',
         `Presented the new match calendar for season ${thisYear}-${nextYear}`,
         moment(status.date).format(DATE_FORMAT)
     );
-    status = {
-        ...status,
-        news: [...status.news, newsOfToday]
-    };
-    return {status, context};
+
+    return {status, context, news};
 
 };
 
 const marketClose = (status, context) => {
     status = {
         ...status,
-        marketOpen: false,
-        news: [...status.news,
-            newsGenerator.generate(
-                'Transfer Market Closed!',
-                'Transfer Market officially closed',
-                moment(status.date).format(DATE_FORMAT)
-            )]
+        marketOpen: false
     };
 
-    return {status, context};
+    const news = newsGenerator.generate(
+        'Transfer Market Closed!',
+        'Transfer Market officially closed',
+        moment(status.date).format(DATE_FORMAT)
+    );
+
+    return {status, context, news};
 };
 
 

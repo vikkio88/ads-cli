@@ -5,10 +5,17 @@ import trigger from "./events/trigger";
 
 const noMoreGamesToPlay = fixture => fixture.filter(r => !r.played).length === 0;
 const appendNews = (status, news) => {
-    status.news = [
-        ...status.news,
-        ...news
-    ];
+    if (Array.isArray(news)) {
+        status.news = [
+            ...status.news,
+            ...news
+        ];
+    } else {
+        status.news = [
+            ...status.news,
+            news
+        ];
+    }
 };
 const appendMessages = (status, messages) => {
     status.messages = [
@@ -26,6 +33,7 @@ export const day = {
             const result = dateTriggeredEvent(status, context);
             status = result.status;
             context = result.context;
+            appendNews(status, result.news);
         }
 
         const league = context.league;
