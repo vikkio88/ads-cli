@@ -10,7 +10,6 @@ export default {
     unemployed(state) {
         const {status} = state;
         if (!status.hired) {
-            console.log("not hired");
             return offerContract;
         }
     }

@@ -1,5 +1,9 @@
 import {newsGenerator} from "../../game/news";
 import {DATE_FORMAT} from "../../../const";
+import {randomizer} from "../../generator/randomizer";
+import {messageGenerator} from "../../game/messages";
+import {generator} from "../../generator/generator";
+import {acceptContract, noOp} from "../actions/index";
 
 export const seasonOver = state => {
     const {status, context, today} = state;
@@ -13,7 +17,30 @@ export const seasonOver = state => {
     return {news};
 };
 
-export const offerContract = () => {
-    const messages = {message: "Ciao"};
-    return {messages};
+export const offerContract = state => {
+    if (randomizer.chance(Math.max(50, state.status.fame))) {
+        const {list} = state.context.teams;
+        const team = randomizer.pickOne(list);
+        const contract = {
+            years: randomizer.int(1, 3),
+            money: randomizer.int(18, 50)
+        };
+        const teamIndex = list.indexOf(team);
+
+        const ttl = randomizer.int(1, 3);
+        const messages = messageGenerator.generate(
+            'Contract Offer',
+            team.name,
+            `${team.name} president is delighted to offer you ${contract.years} years contract
+            at £${contract.money}k per year, would you accept?
+            You need to decide in ${ttl} days.
+            (team index is ${teamIndex})`,
+            state.today.format(DATE_FORMAT),
+            [noOp, acceptContract],
+            {team, teamIndex, contract},
+            ttl
+        );
+        return {messages};
+    }
+    return {};
 };
