@@ -9,7 +9,7 @@ import {context, status} from './status';
 import {teamHelper} from '../';
 import {
     bold, error, link,
-    moraleToEmoji, percentageToStar, printNews,
+    moraleToEmoji, percentageToStar, printMessage, printNews,
     ROW_LINE, SMALL_ROW_LINE
 } from './cli';
 import {DATE_FORMAT} from "../../const/index";
@@ -109,7 +109,7 @@ export const newsHelper = {
         }
     },
     setAllAsRead(news) {
-        return news.map(newsHelper.setAsRead)
+        return news.map(newsHelper.setAsRead);
     },
     setAsRead(singleNews) {
         singleNews.read = true;
@@ -117,7 +117,38 @@ export const newsHelper = {
     }
 };
 
-export const messageHelper = {};
+export const messageHelper = {
+    read(messages, index) {
+        const message = messages[index - 1];
+        if (message) {
+            printMessage(message);
+            messageHelper.setAsRead(message);
+        } else {
+            console.log(error(`No messages with index ${index}`));
+        }
+    },
+    reply(messages, index, status) {
+        const message = messages[index - 1];
+        if (message) {
+            printMessage(message);
+            messageHelper.setAsRead(message);
+            const reply = Number(readline.keyInYN("Your reply?"));
+            status.actions = {
+                action: message.actions[reply],
+                payload: message.payload
+            };
+        } else {
+            console.log(error(`No messages with index ${index}`));
+        }
+    },
+    setAllAsRead(messages) {
+        return messages.map(messageHelper.setAsRead);
+    },
+    setAsRead(message) {
+        message.read = true;
+        return message;
+    }
+};
 
 const tableOrdering = field => {
     return (row1, row2) => row1[field] < row2[field] ? 1 : -1;

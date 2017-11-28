@@ -13,7 +13,8 @@ export const status = {
     //date: moment(`${moment().format('YYYY')}0601`, DATE_FORMAT_GAP),
     date: moment(`${moment().format('YYYY')}0729`, DATE_FORMAT_GAP),
     marketOpen: true,
-    history: []
+    history: [],
+    actions: []
 };
 
 export const context = {

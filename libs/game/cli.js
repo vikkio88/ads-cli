@@ -73,6 +73,24 @@ export const printNews = news => {
     console.log();
 };
 
+export const printMessageList = messages => {
+    console.log();
+    console.log(bold("MESSAGES"));
+    console.log(SMALL_ROW_LINE);
+    messages.forEach((m, index) => {
+        if (!m.read) {
+            console.log(`${index + 1} - ${bold(m.subject)} - ${m.date} -  from: ${m.from}`);
+        } else {
+            console.log(`${index + 1} - ${link(m.subject)} - ${m.date} - from: ${m.from}`);
+        }
+        console.log(SMALL_ROW_LINE)
+    });
+    if (!messages.length) {
+        console.log();
+        console.log('No messages');
+    }
+    console.log();
+};
 export const printNewsList = newsList => {
     const unreadNews = newsList.filter(n => !n.read);
     const readNews = newsList.filter(n => n.read);
@@ -100,6 +118,22 @@ export const percentageToStar = percentage => {
     const fullStars = Math.round(percentage * NUMBER_OF_STARS / PERCENT);
     return bold(`${FULL_STAR.repeat(fullStars)}${EMPTY_STAR.repeat(NUMBER_OF_STARS - fullStars)}`);
 };
+
+export const printMessage = message => {
+    console.log(SMALL_ROW_LINE);
+    console.log(bold(message.subject));
+    console.log(`from: ${bold(message.from)}`);
+    console.log(bold(message.date));
+    console.log(SMALL_ROW_LINE);
+    console.log(message.message);
+    console.log(SMALL_ROW_LINE);
+    if (message.actions.length) {
+        console.log(bold('You can reply to this message'));
+        console.log(SMALL_ROW_LINE);
+    }
+    console.log();
+};
+
 
 export const moraleToEmoji = morale => {
     const moraleCount = MORALE.length;

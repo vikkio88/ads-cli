@@ -1,6 +1,6 @@
-import {error, printNewsList, todayInfo} from './cli';
+import {error, printNewsList, printMessageList, todayInfo} from './cli';
 import {Clear} from 'clui';
-import {leaguePrinter, newsHelper, teamPrinter} from "./utils";
+import {leaguePrinter, messageHelper, newsHelper, teamPrinter} from "./utils";
 import {day} from "../simulator/day";
 
 export const mainActions = (status, context, game) => {
@@ -64,11 +64,18 @@ export const mainActions = (status, context, game) => {
                 case 'news':
                     if (index) {
                         newsHelper.read(status.news, index);
+                    } else if (index === 'all') {
+                        newsHelper.setAllAsRead(status.news);
                     } else {
                         printNewsList(status.news);
                     }
                     break;
                 case 'messages':
+                    if (index) {
+                        messageHelper.read(status.messages, index);
+                    } else {
+                        printMessageList(status.messages);
+                    }
                     break;
                 default:
                     console.log(error(`no ${type} to read`));

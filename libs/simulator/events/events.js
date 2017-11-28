@@ -2,7 +2,6 @@ import {newsGenerator} from "../../game/news";
 import {DATE_FORMAT} from "../../../const";
 import {randomizer} from "../../generator/randomizer";
 import {messageGenerator} from "../../game/messages";
-import {generator} from "../../generator/generator";
 import {acceptContract, noOp} from "../actions/index";
 
 export const seasonOver = state => {
@@ -31,11 +30,11 @@ export const offerContract = state => {
         const messages = messageGenerator.generate(
             'Contract Offer',
             team.name,
-            `Dear ${status.status.name},
-            ${team.name} president is delighted to offer you ${contract.years} years contract
-            at £${contract.money}k per year, would you accept?
-            You need to decide in ${ttl} days.
-            (team index is ${teamIndex})`,
+            `Dear ${state.status.player.name},\n` +
+            `${team.name} president is delighted to offer you ${contract.years} years contract\n` +
+            `at €${contract.money}k per year, would you accept?\n` +
+            `You need to decide in ${ttl} days.\n` +
+            `(team index is ${teamIndex})`,
             state.today.format(DATE_FORMAT),
             [noOp, acceptContract],
             {team, teamIndex, contract},
