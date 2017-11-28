@@ -37,7 +37,7 @@ export const offerContract = state => {
             `(team index is ${teamIndex})`,
             state.today.format(DATE_FORMAT),
             [noOp, acceptContract],
-            {team, teamIndex, contract},
+            {team: team.name, teamIndex, contract},
             ttl
         );
         return {messages};

@@ -118,28 +118,42 @@ export const newsHelper = {
 };
 
 export const messageHelper = {
-    read(messages, index) {
+    read(status, index) {
+        const {messages} = status;
         const message = messages[index - 1];
         if (message) {
-            printMessage(message);
+            printMessage(message, status.date);
             messageHelper.setAsRead(message);
         } else {
             console.log(error(`No messages with index ${index}`));
         }
     },
-    reply(messages, index, status) {
+    reply(status, index) {
+        const {messages} = status;
         const message = messages[index - 1];
+
         if (message) {
-            printMessage(message);
+            printMessage(message, status.date);
             messageHelper.setAsRead(message);
-            const reply = Number(readline.keyInYN("Your reply?"));
-            status.actions = {
-                action: message.actions[reply],
-                payload: message.payload
-            };
-        } else {
-            console.log(error(`No messages with index ${index}`));
+            if (!messageHelper.canStillReply(message, status.date)) {
+                console.log(error('The message has expired...'))
+            } else {
+                const reply = Number(readline.keyInYN("Your reply?"));
+                status.actions = {
+                    action: message.actions[reply],
+                    payload: message.payload
+                };
+            }
+            return;
         }
+
+        console.log(error(`No messages with index ${index}`));
+    },
+    canStillReply(message, today) {
+        return moment(today)
+            .isSameOrBefore(
+                moment(message.date, DATE_FORMAT).add(message.ttl, 'days')
+            );
     },
     setAllAsRead(messages) {
         return messages.map(messageHelper.setAsRead);

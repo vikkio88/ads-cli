@@ -72,13 +72,28 @@ export const mainActions = (status, context, game) => {
                     break;
                 case 'messages':
                     if (index) {
-                        messageHelper.read(status.messages, index);
+                        messageHelper.read(status, index);
                     } else {
                         printMessageList(status.messages);
                     }
                     break;
                 default:
                     console.log(error(`no ${type} to read`));
+                    break;
+            }
+        },
+        action(type, index) {
+            switch (type) {
+                case 'message': {
+                    if (index && status.messages.length <= index) {
+                        messageHelper.reply(status, index);
+                    } else {
+                        console.log(error(`wrong message index ${index}`));
+                    }
+                    break;
+                }
+                default:
+                    console.log(error(`invalid action type ${type}`));
                     break;
             }
         },

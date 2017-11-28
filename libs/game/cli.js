@@ -1,5 +1,7 @@
 import chalkPipe from 'chalk-pipe';
 import moment from "moment";
+import {DATE_FORMAT} from "../../const/index";
+import {messageHelper} from "./utils";
 
 const FULL_STAR = '★';
 const EMPTY_STAR = '☆';
@@ -119,7 +121,7 @@ export const percentageToStar = percentage => {
     return bold(`${FULL_STAR.repeat(fullStars)}${EMPTY_STAR.repeat(NUMBER_OF_STARS - fullStars)}`);
 };
 
-export const printMessage = message => {
+export const printMessage = (message, today) => {
     console.log(SMALL_ROW_LINE);
     console.log(bold(message.subject));
     console.log(`from: ${bold(message.from)}`);
@@ -128,7 +130,11 @@ export const printMessage = message => {
     console.log(message.message);
     console.log(SMALL_ROW_LINE);
     if (message.actions.length) {
-        console.log(bold('You can reply to this message'));
+        if (messageHelper.canStillReply(message, today)) {
+            console.log(bold('You can reply to this message'));
+        } else {
+            console.log(bold('You cannot reply to this message anymore'));
+        }
         console.log(SMALL_ROW_LINE);
     }
     console.log();
