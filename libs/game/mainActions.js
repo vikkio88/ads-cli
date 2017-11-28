@@ -85,7 +85,7 @@ export const mainActions = (status, context, game) => {
         action(type, index) {
             switch (type) {
                 case 'message': {
-                    if (index && status.messages.length <= index) {
+                    if (index && status.messages.length) {
                         messageHelper.reply(status, index);
                     } else {
                         console.log(error(`wrong message index ${index}`));
