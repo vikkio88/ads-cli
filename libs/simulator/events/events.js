@@ -31,7 +31,8 @@ export const offerContract = state => {
         const messages = messageGenerator.generate(
             'Contract Offer',
             team.name,
-            `${team.name} president is delighted to offer you ${contract.years} years contract
+            `Dear ${status.status.name},
+            ${team.name} president is delighted to offer you ${contract.years} years contract
             at £${contract.money}k per year, would you accept?
             You need to decide in ${ttl} days.
             (team index is ${teamIndex})`,
