@@ -138,10 +138,14 @@ export const messageHelper = {
                 console.log(error('The message has expired...'))
             } else {
                 const reply = Number(readline.keyInYN("Your reply?"));
-                status.actions = {
-                    action: message.actions[reply],
-                    payload: message.payload
-                };
+                message.replied = true;
+                status.actions = [
+                    ...status.actions,
+                    {
+                        action: message.actions[reply],
+                        payload: message.payload
+                    }
+                ];
             }
             return;
         }
@@ -149,7 +153,7 @@ export const messageHelper = {
         console.log(error(`No messages with index ${index}`));
     },
     canStillReply(message, today) {
-        return moment(today)
+        return !message.replied && moment(today)
             .isSameOrBefore(
                 moment(message.date, DATE_FORMAT).add(message.ttl, 'days')
             );

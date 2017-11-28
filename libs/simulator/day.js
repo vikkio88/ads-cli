@@ -49,6 +49,13 @@ export const day = {
             appendNews(status, result.news);
         }
 
+        status.actions.forEach(action => {
+            const {messages, news} = action.action({status, context}, action.payload);
+            appendNews(status, news);
+            appendMessages(status, messages);
+        });
+        status.actions = [];
+
         const league = context.league;
         appendNews(status, leagueHelper.simulateDay(league, context.teams, today));
 
