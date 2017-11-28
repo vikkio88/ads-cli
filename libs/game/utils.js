@@ -131,7 +131,6 @@ export const messageHelper = {
     reply(status, index) {
         const {messages} = status;
         const message = messages[index - 1];
-
         if (message) {
             printMessage(message, status.date);
             messageHelper.setAsRead(message);
