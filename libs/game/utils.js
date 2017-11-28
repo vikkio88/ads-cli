@@ -221,9 +221,13 @@ export const leaguePrinter = {
 
 export const teamPrinter = {
     teams(teams) {
+        console.log(bold('TEAMS'));
+        console.log(ROW_LINE);
         teams.forEach((t, index) => {
             console.log(`${index + 1} - ${t.name}`);
+            console.log(ROW_LINE);
         });
+        console.log();
     },
     team(teams, index) {
         const selectedTeam = teams[index - 1];
