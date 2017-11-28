@@ -1,10 +1,10 @@
 import conditions from "./conditions";
 
-export default (today, status, context) => {
+export default state => {
     const events = [];
 
     Object.keys(conditions).forEach(condition => {
-        const triggered = conditions[condition](today, status, context);
+        const triggered = conditions[condition](state);
         if (triggered) {
             events.push(triggered)
         }

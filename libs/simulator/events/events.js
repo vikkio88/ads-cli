@@ -1,7 +1,8 @@
 import {newsGenerator} from "../../game/news";
 import {DATE_FORMAT} from "../../../const";
 
-export const seasonOver = (today, status, context) => {
+export const seasonOver = state => {
+    const {status, context, today} = state;
     const {name, table, scorers} = context.league;
     status.history.push({name, table, scorers});
     const news = [
@@ -12,7 +13,7 @@ export const seasonOver = (today, status, context) => {
     return {news};
 };
 
-export const offerContract = (today, status, context) => {
+export const offerContract = () => {
     const messages = {message: "Ciao"};
     return {messages};
 };

@@ -1,17 +1,17 @@
 import {offerContract, seasonOver} from "./events";
 
 export default {
-    noMoreGamesToPlay(today, status, context) {
+    noMoreGamesToPlay(state) {
+        const {context} = state;
         if (context.fixture && context.fixture.filter(r => !r.played).length === 0) {
-            return seasonOver
+            return seasonOver;
         }
-        return null;
     },
-    unemployed(today, status, context) {
+    unemployed(state) {
+        const {status} = state;
         if (!status.hired) {
             console.log("not hired");
-            return offerContract
+            return offerContract;
         }
-        return null;
     }
 }

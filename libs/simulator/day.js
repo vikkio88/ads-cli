@@ -52,8 +52,8 @@ export const day = {
         const league = context.league;
         appendNews(status, leagueHelper.simulateDay(league, context.teams, today));
 
-        trigger(today, status, context).forEach(event => {
-            const {news, messages} = event(today, status, context);
+        trigger({today, status, context}).forEach(event => {
+            const {news, messages} = event({today, status, context});
             appendNews(status, news);
             appendMessages(status, messages);
         });

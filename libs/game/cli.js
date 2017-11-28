@@ -51,7 +51,7 @@ export const printNotifications = (messages, news) => {
     const unreadNews = news.filter(n => !n.read).length;
     let message = '';
     if (unreadMessages) {
-        message += `You got ${bold(unreadMessages)} unread mail\n`;
+        message += `You got ${bold(unreadMessages)} unread messages\n`;
     }
 
     if (unreadNews) {
