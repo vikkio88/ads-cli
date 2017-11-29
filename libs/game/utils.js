@@ -9,7 +9,7 @@ import {generator} from '../generator';
 import {context, status} from './status';
 import {teamHelper} from '../';
 import {
-    bold, error, link,
+    bold, error, link, orangeBold,
     moraleToEmoji, percentageToStar, printMessage, printNews,
     ROW_LINE, SMALL_ROW_LINE
 } from './cli';
@@ -179,14 +179,28 @@ export const leaguePrinter = {
             orderedTable.push(table[t]);
         });
         console.log(bold('League Table'));
-        console.log(ROW_LINE);
         orderedTable = orderedTable.sort(tableOrdering('points'));
-        orderedTable.forEach((r, index) => {
-            console.log(
-                `${index + 1} - ${link(r.name)} P ${bold(r.played)} W ${bold(r.won)} D ${bold(r.draw)} L ${bold(r.lost)} DG ${bold(r.goalsScored - r.goalsConceded)}  - ${bold(r.points)}`
-            );
-            console.log(ROW_LINE);
+        const tableCli = new Table({
+            head: ['#', 'Team', 'P', 'W', 'D', 'L', 'GS', 'GC', 'GD', 'Points']
         });
+        orderedTable.forEach((r, index) => {
+            tableCli.push(
+                [
+                    `${index + 1}`,
+                    `${orangeBold(r.name)}`,
+                    `${r.played}`,
+                    `${r.won}`,
+                    `${r.draw}`,
+                    `${r.lost}`,
+                    `${r.goalsScored}`,
+                    `${r.goalsConceded}`,
+                    `${r.goalsScored - r.goalsConceded}`,
+                    `${r.points}`
+                ]
+            );
+        });
+        console.log(tableCli.toString());
+        console.log();
     },
     scorers(scorers) {
         let orderedTable = [];
