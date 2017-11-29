@@ -5,7 +5,7 @@ export const RAWLIST_TYPE = 'rawlist';
 export const EXPAND_TYPE = 'expand';
 
 export const BANNER =
-`
+    `
 *************************************************************
 
  █████╗ ██████╗ ███████╗               ██████╗██╗     ██╗
@@ -19,6 +19,26 @@ export const BANNER =
 Athletic Director Simulator - v 0.0.1
 
 `;
+
+const TABLE_CHARS = {
+    chars: {
+        'top': '═',
+        'top-mid': '╤',
+        'top-left': '╔',
+        'top-right': '╗',
+        'bottom': '═',
+        'bottom-mid': '╧',
+        'bottom-left': '╚',
+        'bottom-right': '╝',
+        'left': '║',
+        'left-mid': '╟',
+        'mid': '─',
+        'mid-mid': '┼',
+        'right': '║',
+        'right-mid': '╢',
+        'middle': '│'
+    }
+};
 
 /*
 

@@ -11,6 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "chalk-pipe": "^1.1.0",
+    "cli-table2": "^0.2.0",
     "clui": "^0.3.6",
     "inquirer": "^4.0.0",
     "jsonfile": "^4.0.0",

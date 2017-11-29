@@ -1,6 +1,7 @@
 import inquirer from 'inquirer';
 import readline from 'readline-sync';
 import moment from 'moment';
+import Table from 'cli-table2';
 import {TEAM_NUMBER} from "../../const";
 import {CONFIRM_TYPE, INPUT_TYPE, LIST_TYPE} from "../../const/cli";
 import {nations} from '../../config/nationalities';
@@ -239,12 +240,12 @@ export const leaguePrinter = {
 export const teamPrinter = {
     teams(teams) {
         console.log(bold('TEAMS'));
-        console.log(ROW_LINE);
-        teams.forEach((t, index) => {
-            console.log(`${index + 1} - ${t.name}`);
-            console.log(ROW_LINE);
-        });
         console.log();
+        const table = new Table({head: ['#', 'Name']});
+        teams.forEach((t, index) => {
+            table.push([`${index + 1}`, t.name]);
+        });
+        console.log(table.toString());
     },
     team(teams, index) {
         const selectedTeam = teams[index - 1];
