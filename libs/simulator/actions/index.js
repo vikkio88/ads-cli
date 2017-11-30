@@ -3,6 +3,7 @@ import {newsGenerator} from "../../game/news";
 import {DATE_FORMAT} from "../../../const";
 import moment from "moment";
 import {randomizer} from "../../generator/randomizer";
+import {percentageModify} from "../../../utils";
 
 export const noOp = () => {
 };
@@ -11,7 +12,9 @@ export const acceptContract = (state, payload) => {
     status.hired = true;
     status.contract = payload.contract;
     status.currentTeam = payload.team;
-    status.fame = status.fame + randomizer.int(1, 10);
+    status.fame = percentageModify(status.fame, randomizer.int(1, 10));
+    status.supporters = percentageModify(status.fame, randomizer.int(1, 25));
+    status.stability = percentageModify(status.fame, randomizer.int(1, 25));
     const today = moment(status.date).format(DATE_FORMAT);
 
     return {

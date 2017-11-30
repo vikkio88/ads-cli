@@ -5,6 +5,8 @@ export const status = {
     player: null,
     hired: false,
     fame: 0,
+    stability: 0,
+    supporters: 0,
     contract: null,
     jobStability: null,
     currentTeam: null,

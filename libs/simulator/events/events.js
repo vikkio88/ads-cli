@@ -1,8 +1,9 @@
 import {newsGenerator} from "../../game/news";
-import {DATE_FORMAT} from "../../../const";
+import {CURREMCY_MODIFIERS, DATE_FORMAT} from "../../../const";
 import {randomizer} from "../../generator/randomizer";
 import {messageGenerator} from "../../game/messages";
 import {acceptContract, noOp} from "../actions/index";
+import {formatCurrency} from "../../../utils";
 
 export const seasonOver = state => {
     const {status, context, today} = state;
@@ -22,7 +23,7 @@ export const offerContract = state => {
         const team = randomizer.pickOne(list);
         const contract = {
             years: randomizer.int(1, 3),
-            money: randomizer.int(18, 50)
+            money: randomizer.int(18, 50) * CURREMCY_MODIFIERS.THOUSANDS
         };
         const teamIndex = list.indexOf(team);
 
@@ -32,7 +33,7 @@ export const offerContract = state => {
             team.name,
             `Dear ${state.status.player.name},\n` +
             `${team.name} president is delighted to offer you ${contract.years} years contract\n` +
-            `at €${contract.money}k per year, would you accept?\n` +
+            `at ${formatCurrency(contract.money)} per year, would you accept?\n` +
             `You need to decide in ${ttl} days.\n` +
             `(team index is ${teamIndex})`,
             state.today.format(DATE_FORMAT),
