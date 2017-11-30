@@ -1,43 +1,53 @@
 const extendedNationalities = {
     'it': {
         name: 'Italy',
-        flag: 'IT'
+        flag: 'IT',
+        currency: '€'
     },
     'en': {
         name: 'England',
-        flag: 'GB'
+        flag: 'GB',
+        currency: '£'
     },
     'ru': {
         name: 'Russia',
-        flag: 'RU'
+        flag: 'RU',
+        currency: '€'
     },
     'es': {
         name: 'Spain',
-        flag: 'ES'
+        flag: 'ES',
+        currency: '€'
     },
     'de': {
         name: 'Germany',
-        flag: 'DE'
+        flag: 'DE',
+        currency: '€'
     },
     'tr': {
         name: 'Turkey',
-        flag: 'TR'
+        flag: 'TR',
+        currency: '€'
     },
     'fr': {
         name: 'France',
-        flag: 'FR'
+        flag: 'FR',
+        currency: '€'
     },
     'ja': {
         name: 'Japan',
-        flag: 'JP'
+        flag: 'JP',
+        currency: '¥'
     },
     'nl': {
         name: 'Netherlands',
-        flag: 'NL'
+        flag: 'NL',
+        currency: '€'
     },
     'cz': {
         name: 'Czech Republic',
-        flag: 'CZ'
+        flag: 'CZ',
+        currency: '€'
     }
 
 };
@@ -47,5 +57,7 @@ const nationalities = [
 ];
 
 const nations = nationalities.map(n => extendedNationalities[n].name);
+const nationsAssoc = {};
+nationalities.forEach(n => nationsAssoc[n] = extendedNationalities[n].name);
 
-export {nationalities, extendedNationalities, nations};
+export {nationalities, extendedNationalities, nations, nationsAssoc};

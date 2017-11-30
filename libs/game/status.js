@@ -16,7 +16,10 @@ export const status = {
     date: moment(`${moment().format('YYYY')}0729`, DATE_FORMAT_GAP),
     marketOpen: true,
     history: [],
-    actions: []
+    actions: [],
+    settings: {
+        currency: '€'
+    }
 };
 
 export const context = {

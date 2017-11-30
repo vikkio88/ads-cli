@@ -4,7 +4,7 @@ import moment from 'moment';
 import Table from 'cli-table2';
 import {TEAM_NUMBER} from "../../const";
 import {CONFIRM_TYPE, INPUT_TYPE, LIST_TYPE} from "../../const/cli";
-import {nations} from '../../config/nationalities';
+import {extendedNationalities, nations, nationsAssoc} from '../../config/nationalities';
 import {generator} from '../generator';
 import {context, status} from './status';
 import {teamHelper} from '../';
@@ -14,6 +14,7 @@ import {
     ROW_LINE, SMALL_ROW_LINE
 } from './cli';
 import {DATE_FORMAT} from "../../const/index";
+import {objectFlip} from "../../utils";
 
 const MAX_SCORERS = 10;
 const mainMenuMapping = {
@@ -70,7 +71,7 @@ export const ask = {
                 type: LIST_TYPE,
                 name: 'nationality',
                 message: 'Where are you from?',
-                choices: nations
+                choices: Object.keys(objectFlip(nationsAssoc))
             }
         ];
 
@@ -78,10 +79,20 @@ export const ask = {
         inquirer.prompt(questions).then(answers => {
             player = {...answers};
             const teams = generator.teams(TEAM_NUMBER);
+            const nationality = objectFlip(nationsAssoc)[player.nationality];
+            const currency = extendedNationalities[nationality].currency;
+            player = {
+                ...player,
+                nationality
+            };
             mainLoop(
                 {
                     ...status,
-                    player
+                    player,
+                    settings: {
+                        ...status.settings,
+                        currency
+                    }
                 },
                 {
                     ...context,
