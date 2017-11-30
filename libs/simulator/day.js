@@ -10,13 +10,13 @@ const appendNews = (status, news) => {
 
     if (Array.isArray(news)) {
         status.news = [
-            ...status.news,
-            ...news
+            ...news,
+            ...status.news
         ];
     } else {
         status.news = [
-            ...status.news,
-            news
+            news,
+            ...status.news
         ];
     }
 };
@@ -26,13 +26,13 @@ const appendMessages = (status, messages) => {
     }
     if (Array.isArray(messages)) {
         status.messages = [
-            ...status.messages,
-            ...messages
+            ...messages,
+            ...status.messages
         ];
     } else {
         status.messages = [
-            ...status.messages,
-            messages
+            messages,
+            ...status.messages
         ];
     }
 };

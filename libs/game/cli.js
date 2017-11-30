@@ -1,5 +1,6 @@
 import chalkPipe from 'chalk-pipe';
 import Table from 'cli-table2';
+import {Progress} from 'clui';
 import moment from 'moment';
 import {messageHelper} from "./utils";
 import {DATE_FORMAT} from "../../const";
@@ -37,15 +38,22 @@ export const warning = chalkPipe('orange.bold');
 export const bgWhiteBlack = chalkPipe('bgWhite.black');
 export const bgRedWhite = chalkPipe('bgRedBright.white');
 
+export const cyan = chalkPipe('cyan');
 export const orangeBold = chalkPipe('orange.bold');
 export const redBold = chalkPipe('red.bold');
 
 export const ROW_LINE = '----------------------------------------------------';
 export const SMALL_ROW_LINE = '----------------';
 
-export const todayInfo = ({date, messages, news}) => {
+export const todayInfo = ({date, messages, news, fame}) => {
     console.log(`DATE: ${bold(moment(date).format(DATE_FORMAT))}`);
+    /*
+    console.log(ROW_LINE);
+    console.log((new Progress(100)).update(fame));
+    */
+    console.log(ROW_LINE);
     printNotifications(messages, news);
+    console.log();
 };
 
 
@@ -79,20 +87,24 @@ export const printNews = news => {
 export const printMessageList = messages => {
     console.log();
     console.log(bold("MESSAGES"));
-    const table = new Table({head: ['#', 'Subject', 'Date', 'From']});
-    messages.forEach((m, index) => {
-        if (!m.read) {
-            table.push([`${index + 1}`, `${bold(m.subject)}`, `${m.date}`, `${m.from}`]);
-        } else {
-            table.push([`${index + 1}`, `${m.subject}`, `${m.date}`, `${m.from}`]);
-        }
-    });
     if (!messages.length) {
         console.log();
-        console.log('No messages');
-    } else {
-        console.log(table.toString());
+        console.log(redBold('No messages'));
+        console.log();
+        return;
     }
+    const table = new Table({head: ['#', 'Subject', 'Date', 'From']});
+    messages.forEach((m, index) => {
+        let subject = '';
+        if (!m.read) {
+            subject = `${bold(m.subject)}`;
+        } else {
+            subject = `${m.subject}`;
+        }
+        table.push([`${index + 1}`, subject, `${m.date}`, `${cyan(m.from)}`]);
+    });
+
+    console.log(table.toString());
     console.log();
 };
 export const printNewsList = newsList => {
