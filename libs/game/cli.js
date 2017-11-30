@@ -1,5 +1,6 @@
 import chalkPipe from 'chalk-pipe';
-import moment from "moment";
+import Table from 'cli-table2';
+import moment from 'moment';
 import {messageHelper} from "./utils";
 import {DATE_FORMAT} from "../../const";
 
@@ -78,18 +79,19 @@ export const printNews = news => {
 export const printMessageList = messages => {
     console.log();
     console.log(bold("MESSAGES"));
-    console.log(SMALL_ROW_LINE);
+    const table = new Table({head: ['#', 'Subject', 'Date', 'From']});
     messages.forEach((m, index) => {
         if (!m.read) {
-            console.log(`${index + 1} - ${bold(m.subject)} - ${m.date} -  from: ${m.from}`);
+            table.push([`${index + 1}`, `${bold(m.subject)}`, `${m.date}`, `${m.from}`]);
         } else {
-            console.log(`${index + 1} - ${link(m.subject)} - ${m.date} - from: ${m.from}`);
+            table.push([`${index + 1}`, `${m.subject}`, `${m.date}`, `${m.from}`]);
         }
-        console.log(SMALL_ROW_LINE)
     });
     if (!messages.length) {
         console.log();
         console.log('No messages');
+    } else {
+        console.log(table.toString());
     }
     console.log();
 };
