@@ -46,7 +46,7 @@ export const ROW_LINE = '----------------------------------------------------';
 export const SMALL_ROW_LINE = '----------------';
 const progressBarPercentage = (label, percent, length = ROW_LINE.length - 8) => {
     length = length - label.length;
-    return `${label} : ${(new Progress(length)).update(percent, 100)}`;
+    return `${cyan(label)} : ${(new Progress(length)).update(percent, 100)}`;
 };
 
 export const todayInfo = status => {
@@ -76,11 +76,11 @@ export const printNotifications = (messages, news) => {
     const unreadNews = news.filter(n => !n.read).length;
     let message = '';
     if (unreadMessages) {
-        message += `You got ${bold(unreadMessages)} unread messages\n`;
+        message += `${orangeBold(unreadMessages)} unread messages\n`;
     }
 
     if (unreadNews) {
-        message += `You got ${bold(unreadNews)} unread news.\n`;
+        message += `${orangeBold(unreadNews)} unread news.\n`;
     }
 
     console.log(message);

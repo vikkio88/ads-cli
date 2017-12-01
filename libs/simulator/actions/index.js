@@ -5,8 +5,8 @@ import moment from "moment";
 import {randomizer} from "../../generator/randomizer";
 import {percentageModify} from "../../../utils";
 
-export const noOp = () => {
-};
+const empty = {message: null, news: null};
+export const noOp = () => empty;
 export const acceptContract = (state, payload) => {
     const {status} = state;
     status.hired = true;
