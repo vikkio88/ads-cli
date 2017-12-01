@@ -49,15 +49,27 @@ const progressBarPercentage = (label, percent, length = ROW_LINE.length - 8) => 
     return `${label} : ${(new Progress(length)).update(percent, 100)}`;
 };
 
-export const todayInfo = ({date, messages, news, fame}) => {
+export const todayInfo = status => {
+    const {date, messages, news, fame} = status;
     console.log(`DATE: ${bold(moment(date).format(DATE_FORMAT))}`);
     console.log(ROW_LINE);
     console.log(`${progressBarPercentage('Fame', fame)}`);
+    printCurrentJobInfo(status);
     console.log(ROW_LINE);
     printNotifications(messages, news);
     console.log();
 };
 
+
+export const printCurrentJobInfo = status => {
+    const {hired, currentTeam, jobStability, supporters} = status;
+    if (hired) {
+        console.log(ROW_LINE);
+        console.log(`team: ${bold(currentTeam)}`);
+        console.log(progressBarPercentage('Stability', jobStability));
+        console.log(progressBarPercentage('Supporters', supporters));
+    }
+};
 
 export const printNotifications = (messages, news) => {
     const unreadMessages = messages.filter(m => !m.read).length;
