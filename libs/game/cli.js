@@ -44,13 +44,15 @@ export const redBold = chalkPipe('red.bold');
 
 export const ROW_LINE = '----------------------------------------------------';
 export const SMALL_ROW_LINE = '----------------';
+const progressBarPercentage = (label, percent, length = ROW_LINE.length - 8) => {
+    length = length - label.length;
+    return `${label} : ${(new Progress(length)).update(percent, 100)}`;
+};
 
 export const todayInfo = ({date, messages, news, fame}) => {
     console.log(`DATE: ${bold(moment(date).format(DATE_FORMAT))}`);
-    /*
     console.log(ROW_LINE);
-    console.log((new Progress(100)).update(fame));
-    */
+    console.log(`${progressBarPercentage('Fame', fame)}`);
     console.log(ROW_LINE);
     printNotifications(messages, news);
     console.log();
