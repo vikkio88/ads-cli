@@ -184,7 +184,7 @@ const tableOrdering = field => {
 };
 
 export const leaguePrinter = {
-    table(table) {
+    table(table, options = {}) {
         let orderedTable = [];
         Object.keys(table).forEach(t => {
             orderedTable.push(table[t]);
@@ -195,25 +195,27 @@ export const leaguePrinter = {
             head: ['#', 'Team', 'P', 'W', 'D', 'L', 'GS', 'GC', 'GD', 'Points']
         });
         orderedTable.forEach((r, index) => {
-            tableCli.push(
-                [
-                    `${index + 1}`,
-                    `${orangeBold(r.name)}`,
-                    `${r.played}`,
-                    `${r.won}`,
-                    `${r.draw}`,
-                    `${r.lost}`,
-                    `${r.goalsScored}`,
-                    `${r.goalsConceded}`,
-                    `${r.goalsScored - r.goalsConceded}`,
-                    `${r.points}`
-                ]
-            );
+            let teamRow = [
+                `${index + 1}`,
+                `${bold(r.name)}`,
+                `${r.played}`,
+                `${r.won}`,
+                `${r.draw}`,
+                `${r.lost}`,
+                `${r.goalsScored}`,
+                `${r.goalsConceded}`,
+                `${r.goalsScored - r.goalsConceded}`,
+                `${r.points}`
+            ];
+            if (options.team && options.team === r.name) {
+                teamRow = teamRow.map(e => orangeBold(e));
+            }
+            tableCli.push(teamRow);
         });
         console.log(tableCli.toString());
         console.log();
     },
-    scorers(scorers) {
+    scorers(scorers, options = {}) {
         let orderedTable = [];
         Object.keys(scorers).forEach(p => {
             orderedTable.push(scorers[p]);
@@ -231,48 +233,63 @@ export const leaguePrinter = {
             console.log(ROW_LINE);
         });
     },
-    fixture(fixture) {
+    fixture(fixture, options = {}) {
         if (!fixture.length) {
             console.log(error("Fixture for the next season are not available yet"));
         }
-        fixture.filter(r => !r.played).some(round => {
+        const matchToPlay = fixture.filter(r => !r.played);
+        matchToPlay.some((round, index) => {
             console.log(bold(`Round ${round.index + 1} - ${moment(round.date).format(DATE_FORMAT)}`));
             round.matches.forEach(m => {
-                console.log(`${m.home} - ${m.away}`);
+                let {home, away} = m;
+                if (options.team && options.team === m.home) {
+                    home = bold(home);
+                }
+                if (options.team && options.team === m.away) {
+                    away = bold(away);
+                }
+                console.log(`${home} - ${away}`);
             });
             console.log(SMALL_ROW_LINE);
             console.log();
-            return !readline.keyInYN('Continue?');
+            return !readline.keyInYN(`Continue? ${index + 1}/${matchToPlay.length}`);
         });
     },
-    results(fixture) {
+    results(fixture, options = {}) {
         const playedRounds = fixture.filter(r => r.played);
         if (!playedRounds.length) {
             console.log(error("No games played yet"));
         }
-        playedRounds.some(round => {
+        playedRounds.some((round, index) => {
             console.log(bold(`Round ${round.index + 1} - ${moment(round.date).format(DATE_FORMAT)}`));
             round.results.forEach(m => {
-                console.log(`${m.home} - ${m.away} ${m.homeGoal} - ${m.awayGoal}`);
+                let {home, away} = m;
+                if (options.team && options.team === m.home) {
+                    home = bold(home);
+                }
+                if (options.team && options.team === m.away) {
+                    away = bold(away);
+                }
+                console.log(`${home} - ${away} ${m.homeGoal} - ${m.awayGoal}`);
             });
             console.log(SMALL_ROW_LINE);
             console.log();
-            return !readline.keyInYN('Continue?');
+            return !readline.keyInYN(`Continue? ${index + 1}/${playedRounds.length}`);
         });
     }
 };
 
 export const teamPrinter = {
-    teams(teams) {
+    teams(teams, options = {}) {
         console.log(bold('TEAMS'));
         console.log();
         const table = new Table({head: ['#', 'Name']});
         teams.forEach((t, index) => {
-            table.push([`${index + 1}`, t.name]);
+            table.push([`${index + 1}`, options.team && options.team === t.name ? bold(t.name) : t.name]);
         });
         console.log(table.toString());
     },
-    team(teams, index) {
+    team(teams, index, options = {}) {
         const selectedTeam = teams[index - 1];
         if (selectedTeam) {
             console.log();
@@ -295,15 +312,15 @@ export const teamPrinter = {
 };
 
 const personPrinter = {
-    person(person) {
+    person(person, options = {}) {
         console.log(`${person.name} ${person.surname}`);
     },
-    coach(coach) {
+    coach(coach, options = {}) {
         console.log(
             `${coach.name} ${coach.surname} (${coach.age}) (${coach.nationality}) ${percentageToStar(coach.skill)}`
         );
     },
-    player(player) {
+    player(player, options = {}) {
         console.log(`${player.position} - ${bold(player.name)} ${bold(player.surname)} (${player.age}) (${player.nationality}) Morale: ${moraleToEmoji(player.status.morale)}  Skill: ${percentageToStar(player.skill)}`);
     }
 };
