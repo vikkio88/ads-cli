@@ -50,22 +50,28 @@ export const day = {
         }
 
         status.actions.forEach(action => {
-            const {messages, news} = action.action({status, context}, action.payload);
-            appendNews(status, news);
-            appendMessages(status, messages);
+            this.parseResultToStatus(action.action({status, context}, action.payload), status);
         });
         status.actions = [];
 
-        const league = context.league;
-        appendNews(status, leagueHelper.simulateDay(league, context.teams, today));
+        const {league, teams} = context;
+        const {currentTeam} = status;
+        this.parseResultToStatus(
+            leagueHelper.simulateDay(league, teams, today, currentTeam),
+            status
+        );
 
         trigger({today, status, context}).forEach(event => {
-            const {news, messages} = event({today, status, context});
-            appendNews(status, news);
-            appendMessages(status, messages);
+            this.parseResultToStatus(event({today, status, context}), status);
         });
 
         status.date = moment(status.date).add(1, 'day').format();
         return {status, context};
+    },
+
+    parseResultToStatus(result, status) {
+        const {news, messages} = result;
+        appendMessages(status, messages);
+        appendNews(status, news)
     }
 };

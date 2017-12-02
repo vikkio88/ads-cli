@@ -5,6 +5,7 @@ import {round} from '../';
 import {newsGenerator} from '../game/news';
 import {DATE_FORMAT} from '../../const';
 import moment from "moment";
+import {bold} from "../game/cli";
 
 const LOSER_MODIFIERS = {
     decreases: [
@@ -124,8 +125,10 @@ const leagueHelper = {
 
         return teamHelper.objectToTeamArray(teams);
     },
-    simulateDay({table, fixture, scorers}, teams, date) {
+    simulateDay({table, fixture, scorers}, teams, date, currentTeam) {
         const todayRound = fixture.filter(r => moment(r.date).isSame(date)).pop();
+        let messages = [];
+        let news = [];
         if (todayRound) {
             const results = round.simulate(todayRound.matches, teams.list);
             leagueHelper.parseRoundResults(results, table);
@@ -134,20 +137,29 @@ const leagueHelper = {
             todayRound.results = results;
             let resultString = '';
             results.forEach(r => {
-                resultString += `\n${r.home} - ${r.away} ${r.homeGoal} - ${r.awayGoal}`
+                let {home, away} = r;
+                if (home === currentTeam) {
+                    home = bold(home);
+                }
+
+                if (away === currentTeam) {
+                    away = bold(away);
+                }
+                resultString += `\n${home} - ${away} ${r.homeGoal} - ${r.awayGoal}`
             });
 
             leagueHelper.updateStatus(results, teams.hash);
 
-            return [
+            news.push(
                 newsGenerator.generate(
                     `Round ${todayRound.index + 1} played`,
                     `Results:${resultString}`,
                     date.format(DATE_FORMAT)
-                )];
+                )
+            );
         }
 
-        return [];
+        return {news, messages};
     }
 };
 

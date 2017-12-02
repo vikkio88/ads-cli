@@ -62,11 +62,11 @@ export const todayInfo = status => {
 
 
 export const printCurrentJobInfo = status => {
-    const {hired, currentTeam, jobStability, supporters} = status;
+    const {hired, currentTeam, stability, supporters} = status;
     if (hired) {
         console.log(ROW_LINE);
         console.log(`team: ${bold(currentTeam)}`);
-        console.log(progressBarPercentage('Stability', jobStability));
+        console.log(progressBarPercentage('Stability', stability));
         console.log(progressBarPercentage('Supporters', supporters));
     }
 };

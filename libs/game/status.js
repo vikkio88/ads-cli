@@ -8,7 +8,6 @@ export const status = {
     stability: 0,
     supporters: 0,
     contract: null,
-    jobStability: null,
     currentTeam: null,
     messages: [],
     news: [],

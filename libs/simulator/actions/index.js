@@ -14,9 +14,8 @@ export const acceptContract = (state, payload) => {
     status.currentTeam = payload.team;
     status.fame = percentageModify(status.fame, randomizer.int(1, 10));
     status.supporters = percentageModify(status.fame, randomizer.int(1, 25));
-    status.stability = percentageModify(status.fame, randomizer.int(1, 25));
+    status.stability = percentageModify(status.fame, randomizer.int(10, 25));
     const today = moment(status.date).format(DATE_FORMAT);
-
     return {
         messages: messageGenerator.generate(
             'Great news!',
