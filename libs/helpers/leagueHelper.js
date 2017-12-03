@@ -61,7 +61,7 @@ const leagueHelper = {
                     row.played += 1;
                     row.points += 1;
                     row.draw += 1;
-                    row.goalsScored += row.goalsScored + r.homeGoal;
+                    row.goalsScored += r.homeGoal;
                     row.goalsConceded += r.homeGoal;
                     teamTable[team] = row;
                 });
