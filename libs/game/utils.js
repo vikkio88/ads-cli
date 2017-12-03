@@ -227,11 +227,17 @@ export const leaguePrinter = {
         }
         console.log(bold('League Scorers Table'));
         console.log(ROW_LINE);
+        const table = tableFactory(['#', 'Player', 'Team', 'Goals']);
         orderedTable.forEach((r, index) => {
             const {player} = r;
-            console.log(`${index + 1} - ${player.name} ${player.surname} - ${link(r.team)} - ${bold(r.goals)}`);
-            console.log(ROW_LINE);
+            let tableRow = [index + 1, `${player.name} ${player.surname}`, bold(r.team), bold(r.goals)];
+            if (options.team && options.team === r.team) {
+                tableRow = tableRow.map(e => orangeBold(e));
+            }
+            table.push(tableRow)
         });
+        console.log(table.toString());
+        console.log();
     },
     fixture(fixture, options = {}) {
         if (!fixture.length) {
