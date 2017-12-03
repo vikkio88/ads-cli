@@ -18,7 +18,8 @@ export const status = {
     actions: [],
     settings: {
         currency: '€'
-    }
+    },
+    tempEvents: {}
 };
 
 export const context = {

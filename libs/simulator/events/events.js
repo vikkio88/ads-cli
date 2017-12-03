@@ -3,7 +3,7 @@ import {CURREMCY_MODIFIERS, DATE_FORMAT} from "../../../const";
 import {randomizer} from "../../generator/randomizer";
 import {messageGenerator} from "../../game/messages";
 import {acceptContract, noOp} from "../actions/index";
-import {formatCurrency} from "../../../utils";
+import {formatCurrency, percentageModify} from "../../../utils";
 
 export const seasonOver = state => {
     const {status, context, today} = state;
@@ -43,5 +43,21 @@ export const offerContract = state => {
         );
         return {messages};
     }
+    return {};
+};
+
+export const playersTeamWon = state => {
+    const {status} = state;
+    status.fame = percentageModify(status.fame, randomizer.int(0, 2));
+    status.stability = percentageModify(status.stability, randomizer.int(0, 2));
+    status.supporters = percentageModify(status.supporters, randomizer.int(0, 2));
+    return {};
+};
+
+export const playersTeamLost = state => {
+    const {status} = state;
+    status.fame = percentageModify(status.fame, -1 * randomizer.int(0, 2));
+    status.stability = percentageModify(status.stability, -1 * randomizer.int(0, 2));
+    status.supporters = percentageModify(status.supporters, -1 * randomizer.int(0, 2));
     return {};
 };

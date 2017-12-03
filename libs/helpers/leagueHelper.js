@@ -129,6 +129,7 @@ const leagueHelper = {
         const todayRound = fixture.filter(r => moment(r.date).isSame(date)).pop();
         let messages = [];
         let news = [];
+        let playerTeamMatch = null;
         if (todayRound) {
             const results = round.simulate(todayRound.matches, teams.list);
             leagueHelper.parseRoundResults(results, table);
@@ -140,10 +141,12 @@ const leagueHelper = {
                 let {home, away} = r;
                 if (home === currentTeam) {
                     home = bold(home);
+                    playerTeamMatch = r;
                 }
 
                 if (away === currentTeam) {
                     away = bold(away);
+                    playerTeamMatch = r;
                 }
                 resultString += `\n${home} - ${away} ${r.homeGoal} - ${r.awayGoal}`
             });
@@ -159,7 +162,7 @@ const leagueHelper = {
             );
         }
 
-        return {news, messages};
+        return {news, messages, playerTeamMatch};
     }
 };
 

@@ -56,10 +56,13 @@ export const day = {
 
         const {league, teams} = context;
         const {currentTeam} = status;
+        const leagueDayResult = leagueHelper.simulateDay(league, teams, today, currentTeam);
         this.parseResultToStatus(
-            leagueHelper.simulateDay(league, teams, today, currentTeam),
+            leagueDayResult,
             status
         );
+        const {playerTeamMatch} = leagueDayResult;
+        status.tempEvents = {playerTeamMatch};
 
         trigger({today, status, context}).forEach(event => {
             this.parseResultToStatus(event({today, status, context}), status);
