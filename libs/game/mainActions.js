@@ -1,4 +1,4 @@
-import {error, printNewsList, printMessageList, todayInfo} from './cli';
+import {success, error, printNewsList, printMessageList, todayInfo} from './cli';
 import {Clear} from 'clui';
 import {messageHelper, newsHelper} from "./utils";
 import {day} from "../simulator/day";
@@ -24,6 +24,16 @@ export const mainActions = (status, context, game) => {
         },
         read(type, index) {
             switch (type) {
+                case 'all':
+                    if (index === 'messages') {
+                        messageHelper.setAllAsRead(status.messages);
+                        console.log(success("Set all messages as read"));
+                    }
+                    if (index === 'news') {
+                        newsHelper.setAllAsRead(status.news);
+                        console.log(success("Set all news as read"));
+                    }
+                    break;
                 case 'news':
                     if (index) {
                         newsHelper.read(status.news, index);
@@ -33,6 +43,7 @@ export const mainActions = (status, context, game) => {
                         printNewsList(status.news);
                     }
                     break;
+                case 'message':
                 case 'messages':
                     if (index) {
                         messageHelper.read(status, index);
@@ -41,12 +52,13 @@ export const mainActions = (status, context, game) => {
                     }
                     break;
                 default:
-                    console.log(error(`no ${type} to read`));
+                    console.log(error(`wrong command: read ${type}`));
                     break;
             }
         },
         action(type, index) {
             switch (type) {
+                case 'messages':
                 case 'message': {
                     if (index && status.messages.length) {
                         messageHelper.reply(status, index);

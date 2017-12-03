@@ -34,6 +34,7 @@ const MORALE_COLOURS = [
 export const bold = chalkPipe('bold');
 export const link = chalkPipe('blue.underline');
 export const error = chalkPipe('bgRed.#cccccc');
+export const success = chalkPipe('green.bold');
 export const warning = chalkPipe('orange.bold');
 
 export const bgWhiteBlack = chalkPipe('bgWhite.black');

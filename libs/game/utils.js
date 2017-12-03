@@ -112,6 +112,9 @@ export const ask = {
 
 export const newsHelper = {
     read(news, index) {
+        if (index === 'last') {
+            index = news.length ? 1 : 0;
+        }
         const newsToRead = news[index - 1];
         if (newsToRead) {
             printNews(newsToRead);
@@ -132,6 +135,9 @@ export const newsHelper = {
 export const messageHelper = {
     read(status, index) {
         const {messages} = status;
+        if (index === 'last') {
+            index = messages.length ? 1 : 0;
+        }
         const message = messages[index - 1];
         if (message) {
             printMessage(message, status.date);
