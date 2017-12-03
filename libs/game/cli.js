@@ -4,6 +4,7 @@ import {Progress} from 'clui';
 import moment from 'moment';
 import {messageHelper} from "./utils";
 import {DATE_FORMAT} from "../../const";
+import {TABLE_CHARS} from "../../const/cli";
 
 const FULL_STAR = '★';
 const EMPTY_STAR = '☆';
@@ -44,10 +45,13 @@ export const redBold = chalkPipe('red.bold');
 
 export const ROW_LINE = '----------------------------------------------------';
 export const SMALL_ROW_LINE = '----------------';
+
 const progressBarPercentage = (label, percent, length = ROW_LINE.length - 8) => {
     length = length - label.length;
     return `${cyan(label)} : ${(new Progress(length)).update(percent, 100)}`;
 };
+
+export const tableFactory = head => new Table({head, chars: TABLE_CHARS.chars});
 
 export const todayInfo = status => {
     const {date, messages, news, fame} = status;
@@ -107,7 +111,7 @@ export const printMessageList = messages => {
         console.log();
         return;
     }
-    const table = new Table({head: ['#', 'Subject', 'Date', 'From']});
+    const table = tableFactory(['#', 'Subject', 'Date', 'From']);
     messages.forEach((m, index) => {
         let subject = '';
         if (!m.read) {

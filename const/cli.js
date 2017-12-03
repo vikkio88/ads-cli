@@ -20,7 +20,7 @@ Athletic Director Simulator - v 0.0.1
 
 `;
 
-const TABLE_CHARS = {
+export const TABLE_CHARS = {
     chars: {
         'top': '═',
         'top-mid': '╤',

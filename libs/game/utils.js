@@ -11,7 +11,7 @@ import {teamHelper} from '../';
 import {
     bold, error, link, orangeBold,
     moraleToEmoji, percentageToStar, printMessage, printNews,
-    ROW_LINE, SMALL_ROW_LINE
+    ROW_LINE, SMALL_ROW_LINE, tableFactory
 } from './cli';
 import {DATE_FORMAT} from "../../const/index";
 import {objectFlip} from "../../utils";
@@ -191,9 +191,9 @@ export const leaguePrinter = {
         });
         console.log(bold('League Table'));
         orderedTable = orderedTable.sort(tableOrdering('points'));
-        const tableCli = new Table({
-            head: ['#', 'Team', 'P', 'W', 'D', 'L', 'GS', 'GC', 'GD', 'Points']
-        });
+        const tableCli = tableFactory(
+            ['#', 'Team', 'P', 'W', 'D', 'L', 'GS', 'GC', 'GD', 'Points']
+        );
         orderedTable.forEach((r, index) => {
             let teamRow = [
                 `${index + 1}`,
@@ -283,7 +283,7 @@ export const teamPrinter = {
     teams(teams, options = {}) {
         console.log(bold('TEAMS'));
         console.log();
-        const table = new Table({head: ['#', 'Name']});
+        const table = tableFactory(['#', 'Name']);
         teams.forEach((t, index) => {
             table.push([`${index + 1}`, options.team && options.team === t.name ? bold(t.name) : t.name]);
         });
