@@ -296,14 +296,17 @@ export const teamPrinter = {
             console.log(SMALL_ROW_LINE);
             console.log(bold(selectedTeam.name));
             console.log(bold('Coach'));
-            personPrinter.coach(selectedTeam.coach);
+            const coachTable = tableFactory(['Name', 'Age', 'Nation', 'Skill']);
+            coachTable.push(personPrinter.coachToRow(selectedTeam.coach));
+            console.log(coachTable.toString());
             console.log(SMALL_ROW_LINE);
             console.log(bold('Roster'));
             console.log(ROW_LINE);
+            const rosterTable = tableFactory(['Pos.', 'Name', 'Age', 'Nation', 'Morale', 'Skill']);
             selectedTeam.roster.forEach(p => {
-                personPrinter.player(p);
-                console.log(ROW_LINE);
+                rosterTable.push(personPrinter.playerToRow(p));
             });
+            console.log(rosterTable.toString());
             console.log();
         } else {
             console.log(error(`No team with selected index ${index}`));
@@ -315,12 +318,10 @@ const personPrinter = {
     person(person, options = {}) {
         console.log(`${person.name} ${person.surname}`);
     },
-    coach(coach, options = {}) {
-        console.log(
-            `${coach.name} ${coach.surname} (${coach.age}) (${coach.nationality}) ${percentageToStar(coach.skill)}`
-        );
+    coachToRow(coach, options = {}) {
+        return [`${coach.name} ${coach.surname}`, coach.age, coach.nationality, percentageToStar(coach.skill)];
     },
-    player(player, options = {}) {
-        console.log(`${player.position} - ${bold(player.name)} ${bold(player.surname)} (${player.age}) (${player.nationality}) Morale: ${moraleToEmoji(player.status.morale)}  Skill: ${percentageToStar(player.skill)}`);
+    playerToRow(player, options = {}) {
+        return [player.position, `${bold(player.name)} ${bold(player.surname)}`, player.age, player.nationality, moraleToEmoji(player.status.morale), percentageToStar(player.skill)];
     }
 };
