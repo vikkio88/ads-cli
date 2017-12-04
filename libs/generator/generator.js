@@ -6,6 +6,7 @@ import {positions} from '../../config/positions';
 import {modules} from '../../config/modules';
 import {teamNames} from '../../config/teamDefinitions';
 import {playerHelper, coachHelper} from '../helpers';
+import {COLOURS, FULL_BAR} from "../../const/flags";
 
 const PLAYER_AGE_RANGE = [15, 41];
 const COACH_AGE_RANGE = [29, 80];
@@ -121,6 +122,7 @@ const generator = {
         const coachNationality = randomizer.chance(90) ? nationality : this.nationality();
         return {
             name,
+            colours: this.teamColour(),
             status: this.status(),
             nationality,
             finance: randomizer.int(1, 100),
@@ -130,6 +132,11 @@ const generator = {
     },
     teams(number = 8, forcedValues = {}) {
         return range(number).map(() => this.team(forcedValues));
+    },
+    teamColour() {
+        const firstColour = randomizer.pickOne(COLOURS);
+        const secondColour = randomizer.pickOne(COLOURS);
+        return `${firstColour(FULL_BAR)}${secondColour(FULL_BAR)}`;
     }
 };
 

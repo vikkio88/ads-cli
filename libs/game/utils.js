@@ -1,10 +1,9 @@
 import inquirer from 'inquirer';
 import readline from 'readline-sync';
 import moment from 'moment';
-import Table from 'cli-table2';
 import {TEAM_NUMBER} from "../../const";
 import {CONFIRM_TYPE, INPUT_TYPE, LIST_TYPE} from "../../const/cli";
-import {extendedNationalities, nations, nationsAssoc} from '../../config/nationalities';
+import {extendedNationalities, nationsAssoc} from '../../config/nationalities';
 import {generator} from '../generator';
 import {context, status} from './status';
 import {teamHelper} from '../';
@@ -15,6 +14,7 @@ import {
 } from './cli';
 import {DATE_FORMAT} from "../../const/index";
 import {objectFlip} from "../../utils";
+import {FLAGS} from "../../const/flags";
 
 const MAX_SCORERS = 10;
 const mainMenuMapping = {
@@ -295,9 +295,9 @@ export const teamPrinter = {
     teams(teams, options = {}) {
         console.log(bold('TEAMS'));
         console.log();
-        const table = tableFactory(['#', 'Name']);
+        const table = tableFactory(['#', 'Name', 'Colours']);
         teams.forEach((t, index) => {
-            table.push([`${index + 1}`, options.team && options.team === t.name ? bold(t.name) : t.name]);
+            table.push([`${index + 1}`, options.team && options.team === t.name ? bold(t.name) : t.name, t.colours]);
         });
         console.log(table.toString());
     },
@@ -306,7 +306,8 @@ export const teamPrinter = {
         if (selectedTeam) {
             console.log();
             console.log(SMALL_ROW_LINE);
-            console.log(bold(selectedTeam.name));
+            console.log(`${selectedTeam.colours} ${bold(selectedTeam.name.toUpperCase())}`);
+            console.log();
             console.log(bold('Coach'));
             const coachTable = tableFactory(['Name', 'Age', 'Nation', 'Skill']);
             coachTable.push(personPrinter.coachToRow(selectedTeam.coach));
@@ -331,9 +332,22 @@ const personPrinter = {
         console.log(`${person.name} ${person.surname}`);
     },
     coachToRow(coach, options = {}) {
-        return [`${coach.name} ${coach.surname}`, coach.age, coach.nationality, percentageToStar(coach.skill)];
+        return [`${coach.name} ${coach.surname}`, coach.age, miscPrinter.nationality(coach.nationality), percentageToStar(coach.skill)];
     },
     playerToRow(player, options = {}) {
-        return [player.position, `${bold(player.name)} ${bold(player.surname)}`, player.age, player.nationality, moraleToEmoji(player.status.morale), percentageToStar(player.skill)];
+        return [
+            player.position,
+            `${bold(player.name)} ${bold(player.surname)}`,
+            player.age,
+            miscPrinter.nationality(player.nationality),
+            moraleToEmoji(player.status.morale),
+            percentageToStar(player.skill)
+        ];
+    }
+};
+
+const miscPrinter = {
+    nationality(nationality) {
+        return `${FLAGS[nationality]} (${nationality.toUpperCase()})`;
     }
 };
