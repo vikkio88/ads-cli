@@ -25,7 +25,7 @@ export const offerContract = state => {
             years: randomizer.int(1, 3),
             money: randomizer.int(18, 50) * CURREMCY_MODIFIERS.THOUSANDS
         };
-        const teamIndex = list.indexOf(team);
+        const teamIndex = list.indexOf(team) + 1;
 
         const ttl = randomizer.int(1, 3);
         const messages = messageGenerator.generate(
