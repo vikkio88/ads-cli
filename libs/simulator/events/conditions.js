@@ -1,10 +1,11 @@
-import {offerContract, playersTeamLost, playersTeamWon, seasonOver} from "./events";
+import * as events from "./events";
+import {randomizer} from "../../generator";
 
 export default {
     noMoreGamesToPlay(state) {
-        const {context} = state;
-        if (context.fixture && context.fixture.filter(r => !r.played).length === 0) {
-            return seasonOver;
+        const {fixture} = state.context.league;
+        if (fixture.length && fixture.filter(r => !r.played).length === 0) {
+            return events.seasonOver;
         }
     },
     playersTeamHasPlayed(state) {
@@ -12,17 +13,22 @@ export default {
         const {playerTeamMatch} = status.tempEvents;
         if (status.hired && playerTeamMatch) {
             if (!playerTeamMatch.isDraw && playerTeamMatch.winner === status.currentTeam) {
-                return playersTeamWon;
+                return events.playersTeamWon;
             } else if (!playerTeamMatch.isDraw && playerTeamMatch.loser === status.currentTeam) {
-                return playersTeamLost;
-
+                return events.playersTeamLost;
             }
         }
     },
+    playersJobStabilityIsLow(state) {
+        const {stability, hired} = state.status;
+        if (hired && stability < 10 && randomizer.chance(30)) {
+            return events.sackPlayer
+        }
+    },
     unemployed(state) {
-        const {status} = state;
-        if (!status.hired) {
-            return offerContract;
+        const {hired} = state.status;
+        if (!hired) {
+            return events.offerContract;
         }
     }
 }

@@ -19,5 +19,9 @@ const format = (...args) => {
 };
 const formatCurrency = (number, currency = '€') => `${numeral(number).format('(0.00 a)')} ${currency}`;
 
+const tableOrdering = field => {
+    return (row1, row2) => row1[field] < row2[field] ? 1 : -1;
+};
 
-export {ucFirst, range, rangeArray, format, formatCurrency, percentageModify, objectFlip};
+
+export {ucFirst, range, rangeArray, format, formatCurrency, percentageModify, objectFlip, tableOrdering};

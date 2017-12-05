@@ -13,8 +13,9 @@ import {
     ROW_LINE, SMALL_ROW_LINE, tableFactory
 } from './cli';
 import {DATE_FORMAT} from "../../const/index";
-import {objectFlip} from "../../utils";
+import {objectFlip, tableOrdering} from "../../utils";
 import {FLAGS} from "../../const/flags";
+import {leagueHelper} from "../helpers";
 
 const MAX_SCORERS = 10;
 const mainMenuMapping = {
@@ -185,18 +186,10 @@ export const messageHelper = {
     }
 };
 
-const tableOrdering = field => {
-    return (row1, row2) => row1[field] < row2[field] ? 1 : -1;
-};
-
 export const leaguePrinter = {
     table(table, options = {}) {
-        let orderedTable = [];
-        Object.keys(table).forEach(t => {
-            orderedTable.push(table[t]);
-        });
+        const orderedTable = leagueHelper.orderedTable(table);
         console.log(bold('League Table'));
-        orderedTable = orderedTable.sort(tableOrdering('points'));
         const tableCli = tableFactory(
             ['#', 'Team', 'P', 'W', 'D', 'L', 'GS', 'GC', 'GD', 'Points']
         );
@@ -222,12 +215,7 @@ export const leaguePrinter = {
         console.log();
     },
     scorers(scorers, options = {}) {
-        let orderedTable = [];
-        Object.keys(scorers).forEach(p => {
-            orderedTable.push(scorers[p]);
-        });
-        orderedTable = orderedTable.sort(tableOrdering('goals'));
-
+        let orderedTable = leagueHelper.orderedScorers(scorers);
         if (orderedTable.length > MAX_SCORERS) {
             orderedTable = orderedTable.slice(0, MAX_SCORERS);
         }

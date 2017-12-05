@@ -6,6 +6,7 @@ import {newsGenerator} from '../game/news';
 import {DATE_FORMAT} from '../../const';
 import moment from "moment";
 import {bold} from "../game/cli";
+import {tableOrdering} from "../../utils";
 
 const LOSER_MODIFIERS = {
     decreases: [
@@ -163,6 +164,20 @@ const leagueHelper = {
         }
 
         return {news, messages, playerTeamMatch};
+    },
+    orderedTable(table) {
+        const orderedTable = [];
+        Object.keys(table).forEach(t => {
+            orderedTable.push(table[t]);
+        });
+        return orderedTable.sort(tableOrdering('points'));
+    },
+    orderedScorers(scorers) {
+        const orderedTable = [];
+        Object.keys(scorers).forEach(p => {
+            orderedTable.push(scorers[p]);
+        });
+        return orderedTable.sort(tableOrdering('goals'));
     }
 };
 
