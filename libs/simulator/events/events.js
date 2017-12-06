@@ -133,3 +133,28 @@ export const sackPlayer = state => {
         )
     }
 };
+
+export const transferOffer = state => {
+    const {context, status, today} = state;
+    const {hash} = context.teams;
+    const {currentTeam} = status;
+    const player = randomizer.pickOne(hash[currentTeam].roster);
+    const team = randomizer.pickOne(Object.keys(hash));
+    const offer = (player.value * (1 - randomizer.int(1, 100) / 100)) + (player.value * (1 + randomizer.int(1, 100) / 100));
+    const ttl = randomizer.int(1, 5);
+
+    return {
+        messages: messageGenerator.generate(
+            `Formal Offer for ${player.name} ${player.surname}`,
+            `${team}`,
+            `Dear Mr ${status.player.surname},\n` +
+            `We are formalizing you an offer of ${formatCurrency(offer)}\n` +
+            `for the player ${player.name} ${player.surname}.\n` +
+            `Please let us know in max ${ttl} days`,
+            today.format(DATE_FORMAT),
+            [],
+            {player, offer},
+            ttl
+        )
+    };
+};

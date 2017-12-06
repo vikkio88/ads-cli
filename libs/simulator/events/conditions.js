@@ -22,13 +22,20 @@ export default {
     playersJobStabilityIsLow(state) {
         const {stability, hired} = state.status;
         if (hired && stability < 10 && randomizer.chance(30)) {
-            return events.sackPlayer
+            return events.sackPlayer;
         }
     },
     unemployed(state) {
         const {hired} = state.status;
         if (!hired) {
             return events.offerContract;
+        }
+    },
+    marketIsOpen(state) {
+        const {hired, marketOpen} = state.status;
+        if (hired && marketOpen && randomizer.chance(30)) {
+            return events.transferOffer;
+
         }
     }
 }
