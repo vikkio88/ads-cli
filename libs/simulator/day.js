@@ -68,6 +68,7 @@ export const day = {
             this.parseResultToStatus(event({today, status, context}), status);
         });
 
+        status.tempEvents = {};
         status.date = moment(status.date).add(1, 'day').format();
         return {status, context};
     },
