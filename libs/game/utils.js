@@ -13,7 +13,7 @@ import {
     ROW_LINE, SMALL_ROW_LINE, tableFactory
 } from './cli';
 import {DATE_FORMAT} from "../../const/index";
-import {objectFlip} from "../../utils";
+import {formatCurrency, objectFlip} from "../../utils";
 import {FLAGS} from "../../const/flags";
 import {leagueHelper} from "../helpers";
 import {byPlayerPosition} from "../misc";
@@ -316,9 +316,21 @@ export const teamPrinter = {
     }
 };
 
-const personPrinter = {
+export const personPrinter = {
     person(person, options = {}) {
         console.log(`${person.name} ${person.surname}`);
+    },
+    coach(coach) {
+        const coachInfo = tableFactory();
+        coachInfo.push(
+            {'Name': [bold(`${coach.name} ${coach.surname}`)]},
+            {'Age': [bold(coach.age)]},
+            {'Nationality': [miscPrinter.nationality(coach.nationality)]},
+            {'Skill': [bold(coach.skill)]},
+            {'Module': [bold(coach.module)]},
+            {'Wage': [`${bold(formatCurrency(coach.wage))} / y`]}
+        );
+        console.log(coachInfo.toString());
     },
     coachToRow(coach, options = {}) {
         return [`${coach.name} ${coach.surname}`, coach.age, miscPrinter.nationality(coach.nationality), percentageToStar(coach.skill)];

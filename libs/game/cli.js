@@ -52,7 +52,13 @@ const progressBarPercentage = (label, percent, length = ROW_LINE.length - 8) => 
     return `${cyan(label)} : ${(new Progress(length)).update(percent, 100)}`;
 };
 
-export const tableFactory = head => new Table({head, chars: TABLE_CHARS.chars});
+export const tableFactory = (head = null) => {
+    const chars = TABLE_CHARS.chars;
+    if (head) {
+        return new Table({head, chars});
+    }
+    return new Table({chars});
+};
 
 export const todayInfo = status => {
     const {date, messages, news, fame} = status;

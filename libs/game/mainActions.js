@@ -3,6 +3,7 @@ import {Clear} from 'clui';
 import {messageHelper, newsHelper} from "./utils";
 import {day} from "../simulator/day";
 import {db} from "./db";
+import {club} from "./club";
 
 export const mainActions = (status, context, game) => {
     Clear();
@@ -21,6 +22,9 @@ export const mainActions = (status, context, game) => {
         },
         db(entity, action) {
             db({status, context, entity, action});
+        },
+        club(entity, action, payload){
+            club({status, context, entity, action, payload})
         },
         read(type, index) {
             switch (type) {
