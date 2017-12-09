@@ -1,4 +1,5 @@
 import {randomizer} from '../generator/randomizer';
+
 const MIN_MORALE = 0;
 const MAX_MORALE = 100;
 
@@ -7,7 +8,7 @@ const MIN_PRICE = 0.01;
 const MIN_WAGE = 10000;
 
 const playerHelper = {
-    updateStatus(player, modifiers = {}){
+    updateStatus(player, modifiers = {}) {
         let morale = player.status.morale;
         const {increases, decreases} = modifiers;
 
@@ -35,7 +36,7 @@ const playerHelper = {
             }
         }
     },
-    calculateValue(player){
+    calculateValue(player) {
         let price = this.basePriceOnSkill(player.skill);
         price = price * (1 + this.agePriceModifier(player.age));
         price += randomizer.int(1, 3);
@@ -52,7 +53,7 @@ const playerHelper = {
         price += (randomizer.int(0, 9) / 10);
         return Math.round(price * PRICE_MULTIPLIER);
     },
-    basePriceOnSkill(skill){
+    basePriceOnSkill(skill) {
         if (skill > 98) return 130;
         if (skill > 90) return 80;
         if (skill > 80) return 50;
@@ -62,7 +63,7 @@ const playerHelper = {
         if (skill > 50) return 2;
         return 0.5;
     },
-    agePriceModifier(age){
+    agePriceModifier(age) {
         if (age > 34) return -0.82;
         if (age > 32) return -0.54;
         if (age > 30) return -0.25;
@@ -72,7 +73,7 @@ const playerHelper = {
         if (age > 20) return -0.31;
         return 0.5;
     },
-    calculateWage(player){
+    calculateWage(player) {
         const {value, age} = player;
         const modifiedValue = value * (1 + this.agePriceModifier(age));
         let wage = Math.round(modifiedValue * (randomizer.int(1, 10) / 100));
@@ -80,6 +81,11 @@ const playerHelper = {
             wage = (randomizer.int(8, 70) * 1000) + randomizer.int(100, 500);
         }
         return wage;
+    },
+    generateOffer(player) {
+        const {value} = player;
+        return value * (1 - randomizer.int(1, 30) / 100) +
+            value * (1 + randomizer.int(1, 30) / 100);
     }
 };
 

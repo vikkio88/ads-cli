@@ -3,7 +3,7 @@ import {newsGenerator} from "../../game/news";
 import {DATE_FORMAT} from "../../../const";
 import moment from "moment";
 import {randomizer} from "../../generator/randomizer";
-import {percentageModify} from "../../../utils";
+import {formatCurrency, percentageModify} from "../../../utils";
 
 const empty = {message: null, news: null};
 export const noOp = () => empty;
@@ -31,4 +31,40 @@ export const acceptContract = (state, payload) => {
             today
         )
     };
+};
+export const acceptOffer = (state, payload) => {
+    const {status, context} = state;
+    const {currentTeam} = status;
+    const {team, player, offer} = payload;
+    const {hash} = context.teams;
+    hash[currentTeam].finance += offer;
+    hash[team].finance -= offer;
+
+    hash[currentTeam].roster = hash[currentTeam].roster.map(p => p !== player);
+    hash[team].roster.push(player);
+    const news = [];
+    const messages = [];
+    if (randomizer.chance(player.skill)) {
+        status.supporters = percentageModify(status.supporters, -1 * randomizer.int(1, player.skill));
+        messages.push(
+            messageGenerator.generate(
+                `Supporters angry about losing ${player.surname}`,
+                `${currentTeam} FanClub`,
+                `Hi mr ${status.player.surname},\n` +
+                `I just wanted to inform you that the supporters didn't really take well\n` +
+                `your decision of selling ${player.surname} to ${team}`,
+                moment(status.date).format(DATE_FORMAT)
+            )
+        )
+    }
+
+    news.push(newsGenerator.generate(
+        `${currentTeam} sold ${player.surname} to ${team}`,
+        `${currentTeam} confirmed on their website that we sold ${player.name} ${player.surname}\n` +
+        `to ${team} today, according to some voices the money involved were around ${formatCurrency(offer + randomizer.int(-1, 2))}\n`,
+        moment(status.date).format(DATE_FORMAT)
+    ));
+
+    return {news, messages};
+
 };

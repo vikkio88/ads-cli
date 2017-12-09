@@ -35,7 +35,6 @@ export default {
         const {hired, marketOpen} = state.status;
         if (hired && marketOpen && randomizer.chance(30)) {
             return events.transferOffer;
-
         }
     }
 }

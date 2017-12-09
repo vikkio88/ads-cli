@@ -7,6 +7,7 @@ import {modules} from '../../config/modules';
 import {teamNames} from '../../config/teamDefinitions';
 import {playerHelper, coachHelper} from '../helpers';
 import {COLOURS, FULL_BAR} from "../../const/flags";
+import {CURRENCY_MODIFIERS} from "../../const";
 
 const PLAYER_AGE_RANGE = [15, 41];
 const COACH_AGE_RANGE = [29, 80];
@@ -125,7 +126,7 @@ const generator = {
             colours: this.teamColour(),
             status: this.status(),
             nationality,
-            finance: randomizer.int(1, 100),
+            finance: randomizer.int(1, 100) * CURRENCY_MODIFIERS.MILLIONS,
             coach: this.coach({nationality: coachNationality, team: name}),
             roster
         }

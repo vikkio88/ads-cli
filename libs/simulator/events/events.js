@@ -1,10 +1,10 @@
 import {newsGenerator} from "../../game/news";
-import {CURREMCY_MODIFIERS, DATE_FORMAT, MONTH_SHORT} from "../../../const";
+import {CURRENCY_MODIFIERS, DATE_FORMAT, MONTH_SHORT} from "../../../const";
 import {randomizer} from "../../generator/randomizer";
 import {messageGenerator} from "../../game/messages";
-import {acceptContract, noOp} from "../actions/index";
+import {acceptContract, acceptOffer, noOp} from "../actions";
 import {formatCurrency, percentageModify, ucFirst} from "../../../utils";
-import {leagueHelper, teamHelper} from "../../helpers";
+import {leagueHelper, playerHelper, teamHelper} from "../../helpers";
 import moment from "moment";
 import {bold} from "../../game/cli";
 
@@ -62,7 +62,7 @@ export const offerContract = state => {
         const team = randomizer.pickOne(list);
         const contract = {
             years: randomizer.int(1, 3),
-            money: randomizer.int(18, 50) * CURREMCY_MODIFIERS.THOUSANDS
+            money: randomizer.int(18, 50) * CURRENCY_MODIFIERS.THOUSANDS
         };
         const teamIndex = list.indexOf(team) + 1;
 
@@ -140,7 +140,7 @@ export const transferOffer = state => {
     const {currentTeam} = status;
     const player = randomizer.pickOne(hash[currentTeam].roster);
     const team = randomizer.pickOne(Object.keys(hash));
-    const offer = (player.value * (1 - randomizer.int(1, 100) / 100)) + (player.value * (1 + randomizer.int(1, 100) / 100));
+    const offer = playerHelper.generateOffer(player);
     const ttl = randomizer.int(1, 5);
 
     return {
@@ -152,8 +152,8 @@ export const transferOffer = state => {
             `for the player ${player.name} ${player.surname}.\n` +
             `Please let us know in max ${ttl} days`,
             today.format(DATE_FORMAT),
-            [],
-            {player, offer},
+            [noOp, acceptOffer],
+            {player, offer, team},
             ttl
         )
     };
