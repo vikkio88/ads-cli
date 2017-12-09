@@ -8,12 +8,12 @@ import {generator} from '../generator';
 import {context, status} from './status';
 import {teamHelper} from '../';
 import {
-    bold, error, link, orangeBold,
+    bold, error, orangeBold,
     moraleToEmoji, percentageToStar, printMessage, printNews,
     ROW_LINE, SMALL_ROW_LINE, tableFactory
 } from './cli';
 import {DATE_FORMAT} from "../../const/index";
-import {objectFlip, tableOrdering} from "../../utils";
+import {objectFlip} from "../../utils";
 import {FLAGS} from "../../const/flags";
 import {leagueHelper} from "../helpers";
 import {byPlayerPosition} from "../misc";
