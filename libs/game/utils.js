@@ -16,6 +16,7 @@ import {DATE_FORMAT} from "../../const/index";
 import {objectFlip, tableOrdering} from "../../utils";
 import {FLAGS} from "../../const/flags";
 import {leagueHelper} from "../helpers";
+import {byPlayerPosition} from "../misc";
 
 const MAX_SCORERS = 10;
 const mainMenuMapping = {
@@ -304,7 +305,7 @@ export const teamPrinter = {
             console.log(bold('Roster'));
             console.log(ROW_LINE);
             const rosterTable = tableFactory(['Pos.', 'Name', 'Age', 'Nation', 'Morale', 'Skill']);
-            selectedTeam.roster.forEach(p => {
+            selectedTeam.roster.sort(byPlayerPosition).forEach(p => {
                 rosterTable.push(personPrinter.playerToRow(p));
             });
             console.log(rosterTable.toString());

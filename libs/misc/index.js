@@ -8,6 +8,9 @@ export const byTeamSkillAvgDesc = (team, other) => {
 
 // Players
 //ordering functions
+export const byPlayerOffensivity = (player, other) => {
+    return extendedPositions[player.position].weight <= extendedPositions[other.position].weight ? 1 : -1;
+};
 export const byPlayerPosition = (player, other) => {
     return extendedPositions[player.position].weight <= extendedPositions[other.position].weight ? -1 : 1;
 };

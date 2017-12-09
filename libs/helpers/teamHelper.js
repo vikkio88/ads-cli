@@ -1,10 +1,11 @@
 import {randomizer} from '../generator/randomizer';
 import {range} from '../../utils';
 import {extendedModules} from '../../config/modules';
-import {extendedPositions, positions} from '../../config/positions';
+import {positions} from '../../config/positions';
+import {byPlayerOffensivity} from "../misc";
 
 const teamHelper = {
-    createCleanTable(teams){
+    createCleanTable(teams) {
         const table = {};
         teams.forEach(t => {
             table[t.name] = {
@@ -21,7 +22,7 @@ const teamHelper = {
 
         return table;
     },
-    teamsToObject(teams){
+    teamsToObject(teams) {
         const teamsObject = {};
         teams.forEach(t => {
             teamsObject[t.name] = t;
@@ -29,19 +30,19 @@ const teamHelper = {
 
         return teamsObject;
     },
-    objectToTeamArray(teamObject){
+    objectToTeamArray(teamObject) {
         const teams = [];
         Object.keys(teamObject).forEach(k => {
             teams.push(teamObject[k]);
         });
         return teams;
     },
-    scorers(team, goals){
-        const orderedRoster = team.roster.sort((p1, p2) => extendedPositions[p1.position].weight < extendedPositions[p2.position].weight);
+    scorers(team, goals) {
+        const orderedRoster = team.roster.sort(byPlayerOffensivity);
         const possibleScorers = orderedRoster.filter(p => p.position !== 'GK');
         const scorers = [];
         range(goals).forEach(_ => {
-            if (randomizer.chance(80)) {
+            if (randomizer.chance(70)) {
                 const {name, surname} = possibleScorers[randomizer.int(0, 3)];
                 scorers.push({name, surname});
             } else {
@@ -52,7 +53,7 @@ const teamHelper = {
 
         return scorers;
     },
-    averageSkill(team){
+    averageSkill(team) {
         let avg = 0;
         if (team.roster && team.roster.length) {
             let tot = 0;
@@ -61,7 +62,7 @@ const teamHelper = {
         }
         return Math.round(avg);
     },
-    averageAge(team){
+    averageAge(team) {
         let avg = 0;
         if (team.roster && team.roster.length) {
             let tot = 0;
@@ -70,7 +71,7 @@ const teamHelper = {
         }
         return Math.round(avg);
     },
-    updateStatus(team){
+    updateStatus(team) {
         let morale = 0;
         if (team.roster && team.roster.length) {
             let tot = 0;
@@ -84,15 +85,15 @@ const teamHelper = {
             }
         }
     },
-    isOffensive(team){
+    isOffensive(team) {
         const module = team.coach ? team.coach.module : '4-4-2';
         return extendedModules[module].character === 1;
     },
-    isDefensive(team){
+    isDefensive(team) {
         const module = team.coach ? team.coach.module : '4-4-2';
         return extendedModules[module].character === 4;
     },
-    canPlayModule(team){
+    canPlayModule(team) {
         const module = team.coach ? team.coach.module : '4-4-2';
         const roles = extendedModules[module].roles;
         const playersPerRole = this.playersPerRole(team);
@@ -100,7 +101,7 @@ const teamHelper = {
             return !(needed > 0 && !(playersPerRole[positions[index]] >= needed));
         });
     },
-    playersPerRole(team){
+    playersPerRole(team) {
         const positionMapping = {};
         positions.forEach(p => positionMapping[p] = 0);
         team.roster.forEach(p => {
