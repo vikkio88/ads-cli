@@ -8,7 +8,7 @@ import {generator} from '../generator';
 import {context, status} from './status';
 import {teamHelper} from '../';
 import {
-    bold, error, orangeBold,
+    bold, error, orangeBold, success, redBold,
     moraleToEmoji, percentageToStar, printMessage, printNews,
     ROW_LINE, SMALL_ROW_LINE, tableFactory
 } from './cli';
@@ -17,6 +17,8 @@ import {formatCurrency, objectFlip} from "../../utils";
 import {FLAGS} from "../../const/flags";
 import {leagueHelper} from "../helpers";
 import {byPlayerPosition} from "../misc";
+import {extendedPositions} from "../../config/positions";
+import {extendedModules} from "../../config/modules";
 
 const MAX_SCORERS = 10;
 const mainMenuMapping = {
@@ -109,6 +111,14 @@ export const ask = {
                 }
             );
         });
+    },
+
+    selectFromList(question, list, getLabel = null) {
+        let choices = list;
+        if (getLabel) {
+            choices = list.map(getLabel);
+        }
+        return readline.keyInSelect(choices, question);
     }
 };
 
@@ -281,6 +291,35 @@ export const leaguePrinter = {
 };
 
 export const teamPrinter = {
+    info(team) {
+        const teamInfo = tableFactory();
+        const teamCanPlayModule = teamHelper.canPlayModule(team);
+        teamInfo.push(
+            {'Colours': [team.colours]},
+            {'Name': [bold(`${team.name}`)]},
+            {'Nationality': [miscPrinter.nationality(team.nationality)]},
+            {'Avg Morale': [moraleToEmoji(team.status.morale)]},
+            {'Finance': [`${bold(formatCurrency(team.finance))}`]},
+            {'#Players': [`${bold(team.roster.length)}`]},
+            {'Module': [`${bold(team.coach.module)} ${ teamCanPlayModule ? 'YES' : 'NO'}`]},
+        );
+        console.log(teamInfo.toString());
+        const playersPerRole = teamHelper.playersPerRole(team);
+        const rosterInfo = tableFactory(['', ...Object.keys(playersPerRole)]);
+        const rolesRow = [];
+        const rolesNeededRow = [];
+        Object.keys(playersPerRole).forEach((r, index) => {
+            rolesRow.push(teamCanPlayModule ? success(playersPerRole[r]) : redBold(playersPerRole[r]));
+            rolesNeededRow.push(
+                success(extendedModules[team.coach.module].roles[index])
+            );
+        });
+        rosterInfo.push({'Needed': rolesNeededRow});
+        rosterInfo.push({'Players': rolesRow});
+        console.log();
+        console.log(rosterInfo.toString());
+        console.log();
+    },
     teams(teams, options = {}) {
         console.log(bold('TEAMS'));
         console.log();
@@ -331,6 +370,20 @@ export const personPrinter = {
             {'Wage': [`${bold(formatCurrency(coach.wage))} / y`]}
         );
         console.log(coachInfo.toString());
+    },
+    player(player) {
+        const playerInfo = tableFactory();
+        playerInfo.push(
+            {'Name': [bold(`${player.name} ${player.surname}`)]},
+            {'Age': [bold(player.age)]},
+            {'Nationality': [miscPrinter.nationality(player.nationality)]},
+            {'Skill': [bold(player.skill)]},
+            {'Morale': [moraleToEmoji(player.status.morale)]},
+            {'Position': [bold(extendedPositions[player.position].description)]},
+            {'Wage': [`${bold(formatCurrency(player.wage))} / year`]},
+            {'Value': [`${bold(formatCurrency(player.value))}`]}
+        );
+        console.log(playerInfo.toString());
     },
     coachToRow(coach, options = {}) {
         return [`${coach.name} ${coach.surname}`, coach.age, miscPrinter.nationality(coach.nationality), percentageToStar(coach.skill)];

@@ -1,8 +1,9 @@
-import {error} from "./cli";
-import {leaguePrinter, teamPrinter} from "./utils";
+import {bold, error} from "./cli";
+import {ask, leaguePrinter, teamPrinter} from "./utils";
 
 export const db = state => {
-    const {context, entity, action} = state;
+    const {context, entity} = state;
+    let {action} = state;
     const {currentTeam} = state.status;
     const options = {};
     if (currentTeam) {
@@ -15,6 +16,10 @@ export const db = state => {
             break;
         case 't':
         case 'team':
+            if (!action) {
+                action = ask.selectFromList('Select a Team', context.teams.list, t => bold(t.name))
+                action += 1;
+            }
             teamPrinter.team(context.teams.list, action);
             break;
         case 'l':
