@@ -5,7 +5,7 @@ export default state => {
     Object.keys(conditions).forEach(condition => {
         const triggered = conditions[condition](state);
         if (triggered) {
-            events.push(triggered)
+            events.push(triggered);
         }
     });
 

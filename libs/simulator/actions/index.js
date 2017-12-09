@@ -40,7 +40,7 @@ export const acceptOffer = (state, payload) => {
     hash[currentTeam].finance += offer;
     hash[team].finance -= offer;
 
-    hash[currentTeam].roster = hash[currentTeam].roster.map(p => p !== player);
+    hash[currentTeam].roster = hash[currentTeam].roster.filter(p => p !== player);
     hash[team].roster.push(player);
     const news = [];
     const messages = [];
@@ -50,7 +50,7 @@ export const acceptOffer = (state, payload) => {
             messageGenerator.generate(
                 `Supporters angry about losing ${player.surname}`,
                 `${currentTeam} FanClub`,
-                `Hi mr ${status.player.surname},\n` +
+                `Hi mr ${status.player.name},\n` +
                 `I just wanted to inform you that the supporters didn't really take well\n` +
                 `your decision of selling ${player.surname} to ${team}`,
                 moment(status.date).format(DATE_FORMAT)

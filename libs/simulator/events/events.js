@@ -147,7 +147,7 @@ export const transferOffer = state => {
         messages: messageGenerator.generate(
             `Formal Offer for ${player.name} ${player.surname}`,
             `${team}`,
-            `Dear Mr ${status.player.surname},\n` +
+            `Dear Mr ${status.player.name},\n` +
             `We are formalizing you an offer of ${formatCurrency(offer)}\n` +
             `for the player ${player.name} ${player.surname}.\n` +
             `Please let us know in max ${ttl} days`,
