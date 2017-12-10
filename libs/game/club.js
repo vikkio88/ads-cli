@@ -18,6 +18,9 @@ export const club = state => {
         case 'info':
             teamPrinter.info(team);
             break;
+        case 'finance':
+            teamPrinter.finance(team);
+            break;
         case 'coach':
             personPrinter.coach(team.coach);
             break;

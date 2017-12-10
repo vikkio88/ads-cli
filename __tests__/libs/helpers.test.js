@@ -100,6 +100,27 @@ describe('playerHelper tests', () => {
 });
 
 describe('teamHelper tests', () => {
+    test('it calculates correctly the total of the playes wage', () => {
+        const roster = range(5).map(_ => {
+            return {
+                wage: 10
+            }
+        });
+        expect(teamHelper.totalPlayersWage({roster})).toBe(10 * roster.length);
+    });
+
+    test('it calculates the correct available funds', () => {
+        const finance = 70;
+        const coach = {wage: 10};
+        const roster = range(5).map(_ => {
+            return {
+                wage: 10
+            }
+        });
+        expect(teamHelper.availableFunds({finance, coach, roster})).toBe(10);
+        expect(teamHelper.availableFunds({finance, coach: null, roster})).toBe(20);
+    });
+
     test('it calculates correctly the average skill', () => {
         const roster = range(5).map(_ => {
             return {

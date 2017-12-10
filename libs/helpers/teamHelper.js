@@ -1,5 +1,5 @@
 import {randomizer} from '../generator/randomizer';
-import {range} from '../../utils';
+import {formatCurrency, range} from '../../utils';
 import {extendedModules} from '../../config/modules';
 import {positions} from '../../config/positions';
 import {byPlayerAbilityToScore} from "../misc";
@@ -108,6 +108,12 @@ const teamHelper = {
             positionMapping[p.position] += 1;
         });
         return positionMapping;
+    },
+    totalPlayersWage(team) {
+        return team.roster.reduce((total, p) => total + p.wage, 0);
+    },
+    availableFunds(team) {
+        return team.finance - teamHelper.totalPlayersWage(team) - (team.coach ? team.coach.wage : 0);
     }
 };
 

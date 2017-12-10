@@ -323,7 +323,24 @@ export const leaguePrinter = {
 
 export const teamPrinter = {
     finance(team) {
-
+        console.log(bold('TEAM FINANCE'));
+        console.log(ROW_LINE);
+        const table = tableFactory(['', 'Amount']);
+        const playersWages = teamHelper.totalPlayersWage(team);
+        const availableFunds = teamHelper.availableFunds(team);
+        table.push(
+            {'Available Founds': [`+ ${formatCurrency(team.finance)}`]},
+            {'Players Wage': [`- ${formatCurrency(playersWages)}`]},
+            {'Coach Wage': [`- ${formatCurrency(team.coach.wage)}`]},
+            {'': [``]},
+            {
+                [bold('Available Funds')]: [
+                    availableFunds > 0 ? success(formatCurrency(availableFunds))
+                        : redBold(formatCurrency(availableFunds))
+                ]
+            }
+        );
+        console.log(table.toString());
     },
     info(team) {
         const teamInfo = tableFactory();
