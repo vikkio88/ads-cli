@@ -2,7 +2,7 @@ import {randomizer} from '../generator/randomizer';
 import {range} from '../../utils';
 import {extendedModules} from '../../config/modules';
 import {positions} from '../../config/positions';
-import {byPlayerOffensivity} from "../misc";
+import {byPlayerAbilityToScore} from "../misc";
 
 const teamHelper = {
     createCleanTable(teams) {
@@ -38,7 +38,7 @@ const teamHelper = {
         return teams;
     },
     scorers(team, goals) {
-        const orderedRoster = team.roster.sort(byPlayerOffensivity);
+        const orderedRoster = team.roster.sort(byPlayerAbilityToScore);
         const possibleScorers = orderedRoster.filter(p => p.position !== 'GK');
         const scorers = [];
         range(goals).forEach(_ => {
