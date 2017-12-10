@@ -12,23 +12,23 @@ const PERCENT = 100;
 const NUMBER_OF_STARS = 5;
 
 const MORALE = [
-    '😃',
-    '😄',
-    '😊',
-    '😒',
-    '😖',
-    '😞',
     '😤',
+    '😞',
+    '😖',
+    '😒',
+    '😊',
+    '😄',
+    '😃',
 ];
 
 const MORALE_COLOURS = [
-    chalkPipe('greenBright'),
-    chalkPipe('green'),
-    chalkPipe('white'),
-    chalkPipe('yellow'),
-    chalkPipe('orange'),
+    chalkPipe('red'),
     chalkPipe('redBright'),
-    chalkPipe('red')
+    chalkPipe('orange'),
+    chalkPipe('yellow'),
+    chalkPipe('white'),
+    chalkPipe('green'),
+    chalkPipe('greenBright')
 ];
 
 export const bold = chalkPipe('bold');
@@ -183,8 +183,8 @@ export const printMessage = (message, today) => {
 export const moraleToEmoji = morale => {
     const moraleCount = MORALE.length;
     const emojiIndex = Math.min(Math.round(morale * moraleCount / PERCENT), moraleCount - 1);
-    return MORALE_COLOURS.reverse()[emojiIndex](
-        MORALE.reverse()[emojiIndex]
+    return MORALE_COLOURS[emojiIndex](
+        MORALE[emojiIndex]
     );
 };
 
