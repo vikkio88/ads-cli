@@ -161,7 +161,7 @@ export const newsHelper = {
             return;
         }
 
-        if (state.status.tempEvents['pressConference']) {
+        if (state.status.tempEvents.pressConference) {
             console.log(error("You already organized a press conference today"));
             return;
         }
