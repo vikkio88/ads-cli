@@ -23,7 +23,7 @@ export const mainActions = (status, context, game) => {
         db(entity, action) {
             db({status, context, entity, action});
         },
-        club(entity, action, payload){
+        club(entity, action, payload) {
             club({status, context, entity, action, payload})
         },
         read(type, index) {
@@ -71,6 +71,9 @@ export const mainActions = (status, context, game) => {
                     }
                     break;
                 }
+                case 'news':
+                    newsHelper.pressConference({status, context});
+                    break;
                 default:
                     console.log(error(`invalid action type ${type}`));
                     break;

@@ -19,6 +19,7 @@ import {leagueHelper} from "../helpers";
 import {byPlayerPosition} from "../misc";
 import {extendedPositions} from "../../config/positions";
 import {extendedModules} from "../../config/modules";
+import {PRESS_CONFERENCE_TYPES, PRESS_CONFERENCES} from "./news";
 
 const MAX_SCORERS = 10;
 const mainMenuMapping = {
@@ -122,6 +123,18 @@ export const ask = {
     }
 };
 
+export const actionsHelper = {
+    push(action, payload, status) {
+        status.actions = [
+            ...status.actions,
+            {
+                action,
+                payload
+            }
+        ];
+    }
+};
+
 export const newsHelper = {
     read(news, index) {
         if (index === 'last') {
@@ -141,6 +154,30 @@ export const newsHelper = {
     setAsRead(singleNews) {
         singleNews.read = true;
         return singleNews;
+    },
+    pressConference(state) {
+        if (!state.status.hired) {
+            console.log(error("You are not currently working on a team"));
+            return;
+        }
+
+        if (state.status.tempEvents['pressConference']) {
+            console.log(error("You already organized a press conference today"));
+            return;
+        }
+        console.log(ROW_LINE);
+        console.log(orangeBold("PRESS CONFERENCE"));
+        console.log("You are organizing a press conference, what do you want to speak about?");
+        const type = ask.selectFromList(
+            'Options: ',
+            PRESS_CONFERENCE_TYPES.map(t => bold(t))
+        );
+        if (type !== -1) {
+            PRESS_CONFERENCES[type](state);
+            state.status.tempEvents.pressConference = true;
+        } else {
+            console.log("Ok, no press conference organized");
+        }
     }
 };
 
@@ -169,13 +206,7 @@ export const messageHelper = {
             } else {
                 const reply = Number(readline.keyInYN("Your reply?"));
                 message.replied = true;
-                status.actions = [
-                    ...status.actions,
-                    {
-                        action: message.actions[reply],
-                        payload: message.payload
-                    }
-                ];
+                actionsHelper.push(message.actions[reply], message.payload, status);
             }
             return;
         }

@@ -4,6 +4,7 @@ import {DATE_FORMAT} from "../../../const";
 import moment from "moment";
 import {randomizer} from "../../generator/randomizer";
 import {formatCurrency, percentageModify} from "../../../utils";
+import {bold} from "../../game/cli";
 
 const empty = {message: null, news: null};
 export const noOp = () => empty;
@@ -57,7 +58,6 @@ export const acceptOffer = (state, payload) => {
             )
         )
     }
-
     news.push(newsGenerator.generate(
         `${currentTeam} sold ${player.surname} to ${team}`,
         `${currentTeam} confirmed on their website that we sold ${player.name} ${player.surname}\n` +
@@ -67,4 +67,98 @@ export const acceptOffer = (state, payload) => {
 
     return {news, messages};
 
+};
+
+export const speakGoodAboutTeam = (state, payload) => {
+    const {status} = state;
+    const {currentTeam, player} = status;
+    if (payload.team === currentTeam && randomizer.chance(50)) {
+        status.stability = percentageModify(status.stability, randomizer.int(1, 5));
+        status.supporters = percentageModify(status.supporters, randomizer.int(1, 10));
+        status.fame = percentageModify(status.fame, randomizer.int(1, 3));
+    }
+    if (payload.team !== currentTeam && randomizer.chance(50)) {
+        status.stability = percentageModify(status.stability, (-1 * randomizer.int(1, 5)));
+        status.supporters = percentageModify(status.supporters, (-1 * randomizer.int(1, 10)));
+        status.fame = percentageModify(status.fame, randomizer.int(1, 10));
+    }
+
+    return {
+        news: newsGenerator.generate(
+            `${player.name} spoke really well about ${payload.team} club`,
+            `${player.name}, yesterday, during a press conference was speaking really well about\n` +
+            `${bold(payload.team)}${currentTeam === payload.team ? ', his own team' : ''}.`,
+            moment(status.date).format(DATE_FORMAT)
+        )
+    };
+};
+export const speakBadAboutTeam = (state, payload) => {
+    const {status} = state;
+    const {currentTeam, player} = status;
+    if (payload.team === currentTeam && randomizer.chance(80)) {
+        status.stability = percentageModify(status.stability, -1 * randomizer.int(1, 5));
+        status.supporters = percentageModify(status.supporters, -1 * randomizer.int(1, 10));
+        status.fame = percentageModify(status.fame, randomizer.int(1, 5));
+    }
+    if (payload.team !== currentTeam && randomizer.chance(50)) {
+        status.stability = percentageModify(status.stability, randomizer.int(1, 5));
+        status.supporters = percentageModify(status.supporters, randomizer.int(1, 10));
+        status.fame = percentageModify(status.fame, randomizer.int(1, 3));
+    }
+
+    return {
+        news: newsGenerator.generate(
+            `${player.name} expressed his concerns about ${payload.team}`,
+            `${player.name}, yesterday, during a press conference, expressed some concerns\n` +
+            `about the current performance of ${bold(payload.team)}${currentTeam === payload.team ? ', his own team' : ''}.`,
+            moment(status.date).format(DATE_FORMAT)
+        )
+    };
+};
+export const speakGoodAboutPlayer = (state, payload) => {
+    const {status} = state;
+    const {currentTeam, player} = status;
+    if (payload.team === currentTeam && randomizer.chance(50)) {
+        status.stability = percentageModify(status.stability, randomizer.int(1, 5));
+        status.supporters = percentageModify(status.supporters, randomizer.int(1, 5));
+        status.fame = percentageModify(status.fame, randomizer.int(0, 2));
+    }
+    if (payload.team !== currentTeam && randomizer.chance(50)) {
+        status.stability = percentageModify(status.stability, randomizer.int(1, 2));
+        status.supporters = percentageModify(status.supporters, randomizer.int(1, 2));
+        status.fame = percentageModify(status.fame, randomizer.int(0, 2));
+    }
+
+    return {
+        news: newsGenerator.generate(
+            `${player.name} had really good words for ${payload.playerName}`,
+            `${player.name}, yesterday, during a press conference, was speaking really well about\n` +
+            `the current performance of ${bold(payload.playerName)} (${payload.team})${currentTeam === payload.team ? ', currently playing in his own team' : ''}.` +
+            `${currentTeam !== payload.team ? 'Is he probably planning to make an offer?' : ''}`,
+            moment(status.date).format(DATE_FORMAT)
+        )
+    };
+};
+export const speakBadAboutPlayer = (state, payload) => {
+    const {status} = state;
+    const {currentTeam, player} = status;
+    if (payload.team === currentTeam && randomizer.chance(80)) {
+        status.stability = percentageModify(status.stability, -1 * randomizer.int(1, 5));
+        status.supporters = percentageModify(status.supporters, -1 * randomizer.int(1, 5));
+        status.fame = percentageModify(status.fame, randomizer.int(0, 2));
+    }
+    if (payload.team !== currentTeam && randomizer.chance(50)) {
+        status.stability = percentageModify(status.stability, randomizer.int(1, 2));
+        status.supporters = percentageModify(status.supporters, randomizer.int(1, 2));
+        status.fame = percentageModify(status.fame, randomizer.int(0, 2));
+    }
+
+    return {
+        news: newsGenerator.generate(
+            `${player.name} expressed some concerns about ${payload.playerName}`,
+            `${player.name}, yesterday, during a press conference, expressed some concerns about\n` +
+            `the current performance of ${bold(payload.playerName)} (${payload.team})${currentTeam === payload.team ? ', currently playing in his own team' : ''}.`,
+            moment(status.date).format(DATE_FORMAT)
+        )
+    };
 };
