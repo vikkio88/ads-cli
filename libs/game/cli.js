@@ -187,3 +187,5 @@ export const moraleToEmoji = morale => {
         MORALE.reverse()[emojiIndex]
     );
 };
+
+export const percentagePrinter = percentage => `${bold(percentage)}%`;

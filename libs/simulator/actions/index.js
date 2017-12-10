@@ -5,6 +5,7 @@ import moment from "moment";
 import {randomizer} from "../../generator/randomizer";
 import {formatCurrency, percentageModify} from "../../../utils";
 import {bold} from "../../game/cli";
+import {playerHelper} from "../../helpers";
 
 const empty = {message: null, news: null};
 export const noOp = () => empty;
@@ -129,6 +130,10 @@ export const speakGoodAboutPlayer = (state, payload) => {
         status.fame = percentageModify(status.fame, randomizer.int(0, 2));
     }
 
+    payload.player.status.morale = randomizer.chance(60) ?
+        percentageModify(payload.player.status.morale, randomizer.int(1, 5))
+        : percentageModify(payload.player.status.morale, -1 * randomizer.int(1, 15));
+
     return {
         news: newsGenerator.generate(
             `${player.name} had really good words for ${payload.playerName}`,
@@ -152,6 +157,10 @@ export const speakBadAboutPlayer = (state, payload) => {
         status.supporters = percentageModify(status.supporters, randomizer.int(1, 2));
         status.fame = percentageModify(status.fame, randomizer.int(0, 2));
     }
+
+    payload.player.status.morale = randomizer.chance(70) ?
+        percentageModify(payload.player.status.morale, -1 * randomizer.int(1, 10))
+        : percentageModify(payload.player.status.morale, randomizer.int(1, 10));
 
     return {
         news: newsGenerator.generate(

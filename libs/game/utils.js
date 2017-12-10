@@ -10,7 +10,7 @@ import {teamHelper} from '../';
 import {
     bold, error, orangeBold, success, redBold,
     moraleToEmoji, percentageToStar, printMessage, printNews,
-    ROW_LINE, SMALL_ROW_LINE, tableFactory
+    ROW_LINE, SMALL_ROW_LINE, tableFactory, percentagePrinter
 } from './cli';
 import {DATE_FORMAT} from "../../const/index";
 import {formatCurrency, objectFlip} from "../../utils";
@@ -408,8 +408,8 @@ export const personPrinter = {
             {'Name': [bold(`${player.name} ${player.surname}`)]},
             {'Age': [bold(player.age)]},
             {'Nationality': [miscPrinter.nationality(player.nationality)]},
-            {'Skill': [bold(player.skill)]},
-            {'Morale': [moraleToEmoji(player.status.morale)]},
+            {'Skill': [percentagePrinter(player.skill)]},
+            {'Morale': [`${moraleToEmoji(player.status.morale)} ${percentagePrinter(player.status.morale)}`]},
             {'Position': [bold(extendedPositions[player.position].description)]},
             {'Wage': [`${bold(formatCurrency(player.wage))} / year`]},
             {'Value': [`${bold(formatCurrency(player.value))}`]}

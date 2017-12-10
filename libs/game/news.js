@@ -47,6 +47,10 @@ export const PRESS_CONFERENCES = [
     state => {
         const {status, context} = state;
         const playerIndex = ask.selectFromList('Which one of your players?', context.teams.hash[status.currentTeam].roster, p => `${p.name} ${p.surname}`);
+        if (playerIndex === -1) {
+            console.log(`${bold('Journalist')} : So you called me here for nothing? Well thanks mr ${status.player.name}.`);
+            return;
+        }
         const player = context.teams.hash[status.currentTeam].roster[playerIndex];
         const playerName = `${player.name} ${player.surname}`;
         const payload = {team: status.currentTeam, player, playerName};
