@@ -1,9 +1,13 @@
 import {bold, error} from "./cli";
 import {ask, personPrinter, teamPrinter} from "./utils";
 import {extendedPositions} from "../../config/positions";
+import {tableOrdering} from "../../utils";
+
+const ALLOWED_ORDERING_FIELDS = ['skill', 'age', 'wage', 'value'];
 
 export const club = state => {
-    const {status, context, entity, action, payload} = state;
+    const {status, context, entity, payload} = state;
+    let {action} = state;
     const {currentTeam} = status;
     if (!currentTeam) {
         console.log(error('You are not currently hired in any team'));
@@ -17,6 +21,7 @@ export const club = state => {
         case 'coach':
             personPrinter.coach(team.coach);
             break;
+        case 'p':
         case 'player':
             const index = ask.selectFromList(
                 'Select a Player',
@@ -26,6 +31,11 @@ export const club = state => {
             if (index >= 0) {
                 personPrinter.player(team.roster[index]);
             }
+            break;
+        case 'roster':
+        case 'players':
+            action = action && ALLOWED_ORDERING_FIELDS.indexOf(action) ? tableOrdering(action) : null;
+            teamPrinter.myRoster(team.roster, context.league, action);
             break;
         default:
             console.log(error(`wrong command ${entity} ${action}`));

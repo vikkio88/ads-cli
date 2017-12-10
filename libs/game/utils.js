@@ -322,6 +322,9 @@ export const leaguePrinter = {
 };
 
 export const teamPrinter = {
+    finance(team) {
+
+    },
     info(team) {
         const teamInfo = tableFactory();
         const teamCanPlayModule = teamHelper.canPlayModule(team);
@@ -350,6 +353,40 @@ export const teamPrinter = {
         console.log();
         console.log(rosterInfo.toString());
         console.log();
+    },
+    myRoster(roster, league, order) {
+        let ordered = roster.sort(byPlayerPosition);
+        if (order) {
+            ordered = ordered.sort(order)
+        }
+        const {scorers} = league;
+        const table = tableFactory([
+            '#',
+            'Name',
+            'Age',
+            'Nationality',
+            'Skill',
+            'Position',
+            'Wage',
+            'Value',
+            'Goals'
+        ]);
+        ordered.forEach((p, index) => {
+            table.push(
+                [
+                    `${index + 1}`,
+                    `${p.name} ${p.surname}`,
+                    `${p.age}`,
+                    `${miscPrinter.nationality(p.nationality)}`,
+                    `${percentagePrinter(p.skill)}`,
+                    `${p.position}`,
+                    `${formatCurrency(p.wage)} / year`,
+                    `${formatCurrency(p.value)}`,
+                    scorers[`${p.name}${p.surname}`] ? scorers[`${p.name}${p.surname}`].goals : '-',
+                ]
+            )
+        });
+        console.log(table.toString());
     },
     teams(teams, options = {}) {
         console.log(bold('TEAMS'));
