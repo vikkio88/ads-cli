@@ -4,7 +4,8 @@ import {Progress} from 'clui';
 import moment from 'moment';
 import {messageHelper} from "./utils";
 import {DATE_FORMAT} from "../../const";
-import {TABLE_CHARS} from "../../const/cli";
+import {BOXEN_DEFAULT_OPTIONS, TABLE_CHARS} from "../../const/cli";
+import boxen from "boxen";
 
 const FULL_STAR = '★';
 const EMPTY_STAR = '☆';
@@ -60,6 +61,8 @@ export const tableFactory = (head = null) => {
     return new Table({chars});
 };
 
+export const boxenFactory = (text, options = {}) => boxen(text, {...BOXEN_DEFAULT_OPTIONS, ...options});
+
 export const todayInfo = status => {
     const {date, messages, news, fame} = status;
     console.log(`DATE: ${bold(moment(date).format(DATE_FORMAT))}`);
@@ -98,9 +101,7 @@ export const printNotifications = (messages, news) => {
 };
 
 export const printNews = news => {
-    console.log(SMALL_ROW_LINE);
-    console.log(bold(bgRedWhite(news.newspaper)));
-    console.log(SMALL_ROW_LINE);
+    console.log(boxenFactory(bold(bgRedWhite(news.newspaper))));
     console.log(bold(news.title));
     console.log(SMALL_ROW_LINE);
     console.log(bold(news.date));
@@ -114,7 +115,7 @@ export const printMessageList = messages => {
     console.log(bold("MESSAGES"));
     if (!messages.length) {
         console.log();
-        console.log(redBold('No messages'));
+        console.log(error('No messages'));
         console.log();
         return;
     }

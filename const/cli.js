@@ -40,6 +40,11 @@ export const TABLE_CHARS = {
     }
 };
 
+export const BOXEN_DEFAULT_OPTIONS = {
+    borderStyle: 'double-single',
+    padding: 1
+};
+
 /*
 
 Examples
