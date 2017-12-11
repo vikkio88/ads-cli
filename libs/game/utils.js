@@ -1,6 +1,7 @@
 import inquirer from 'inquirer';
 import readline from 'readline-sync';
 import moment from 'moment';
+import babar from "babar";
 import {TEAM_NUMBER} from "../../const";
 import {CONFIRM_TYPE, INPUT_TYPE, LIST_TYPE} from "../../const/cli";
 import {extendedNationalities, nationsAssoc} from '../../config/nationalities';
@@ -10,7 +11,7 @@ import {teamHelper} from '../';
 import {
     bold, error, orangeBold, success, redBold,
     moraleToEmoji, percentageToStar, printMessage, printNews,
-    ROW_LINE, SMALL_ROW_LINE, tableFactory, percentagePrinter
+    ROW_LINE, SMALL_ROW_LINE, tableFactory, percentagePrinter, boxenFactory
 } from './cli';
 import {DATE_FORMAT} from "../../const/index";
 import {formatCurrency, objectFlip} from "../../utils";
@@ -318,6 +319,20 @@ export const leaguePrinter = {
             console.log();
             return !readline.keyInYN(`Continue? ${index + 1}/${playedRounds.length}`);
         });
+    },
+    positionTrendChart(team) {
+        const positions = team.stats.positionTrend.map((p, index) => [index + 1, p]);
+        console.log(boxenFactory(`${bold(team.name)} table positions trend`));
+        console.log(babar(positions, {
+            xFractions: 0,
+            yFractions: 0,
+            minX: 1,
+            minY: 1,
+            maxY: TEAM_NUMBER,
+            maxX: TEAM_NUMBER * 2 - 1,
+            height: 40,
+            width: 100
+        }));
     }
 };
 

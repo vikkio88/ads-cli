@@ -9,17 +9,20 @@ export const db = state => {
     if (currentTeam) {
         options.team = currentTeam;
     }
+
+    const {hash, list} = context.teams;
     switch (entity) {
+        case 'stats':
+            action = selectTeam(action, list);
+            leaguePrinter.positionTrendChart(hash[list[action - 1].name]);
+            break;
         case 'ts':
         case 'teams':
             teamPrinter.teams(context.teams.list, options);
             break;
         case 't':
         case 'team':
-            if (!action) {
-                action = ask.selectFromList('Select a Team', context.teams.list, t => bold(t.name))
-                action += 1;
-            }
+            action = selectTeam(action, context.teams.list);
             teamPrinter.team(context.teams.list, action);
             break;
         case 'l':
@@ -53,3 +56,11 @@ export const db = state => {
             console.log(error(`wrong command ${entity} ${action}`));
     }
 };
+
+const selectTeam = (index, list) => {
+    if (!index) {
+        index = ask.selectFromList('Select a Team', list, t => bold(t.name));
+        index += 1;
+    }
+    return index;
+}

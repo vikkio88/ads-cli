@@ -1,5 +1,5 @@
 import {bold, error} from "./cli";
-import {ask, personPrinter, teamPrinter} from "./utils";
+import {ask, leaguePrinter, personPrinter, teamPrinter} from "./utils";
 import {extendedPositions} from "../../config/positions";
 import {tableOrdering} from "../../utils";
 
@@ -39,6 +39,9 @@ export const club = state => {
         case 'players':
             action = action && ALLOWED_ORDERING_FIELDS.indexOf(action) ? tableOrdering(action) : null;
             teamPrinter.myRoster(team.roster, context.league, action);
+            break;
+        case 'stats':
+            leaguePrinter.positionTrendChart(team);
             break;
         default:
             console.log(error(`wrong command ${entity} ${action}`));

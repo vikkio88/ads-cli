@@ -126,6 +126,13 @@ const leagueHelper = {
 
         return teamHelper.objectToTeamArray(teams);
     },
+    updateStats(teamHash, stats) {
+        let {table} = stats;
+        table = leagueHelper.orderedTable(table);
+        table.forEach((r, index) => {
+            teamHash[r.name].stats.positionTrend.push(index + 1);
+        });
+    },
     simulateDay({table, fixture, scorers}, teams, date, currentTeam) {
         const todayRound = fixture.filter(r => moment(r.date).isSame(date)).pop();
         let messages = [];
@@ -153,6 +160,7 @@ const leagueHelper = {
             });
 
             leagueHelper.updateStatus(results, teams.hash);
+            leagueHelper.updateStats(teams.hash, {table});
 
             news.push(
                 newsGenerator.generate(
