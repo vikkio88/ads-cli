@@ -5,7 +5,7 @@ import {round} from '../';
 import {newsGenerator} from '../game/news';
 import {DATE_FORMAT} from '../../const';
 import moment from "moment";
-import {bold} from "../game/cli";
+import {bold, boxenFactory, tableFactory} from "../game/cli";
 import {tableOrdering} from "../../utils";
 
 const LOSER_MODIFIERS = {
@@ -144,7 +144,7 @@ const leagueHelper = {
             leagueHelper.parseScorers(results, scorers);
             todayRound.played = true;
             todayRound.results = results;
-            let resultString = '';
+            const resultTable = tableFactory(['Home', 'Away', 'Result']);
             results.forEach(r => {
                 let {home, away} = r;
                 if (home === currentTeam) {
@@ -156,7 +156,7 @@ const leagueHelper = {
                     away = bold(away);
                     playerTeamMatch = r;
                 }
-                resultString += `\n${home} - ${away} ${r.homeGoal} - ${r.awayGoal}`
+                resultTable.push([home, away, `${r.homeGoal} - ${r.awayGoal}`]);
             });
 
             leagueHelper.updateStatus(results, teams.hash);
@@ -165,7 +165,7 @@ const leagueHelper = {
             news.push(
                 newsGenerator.generate(
                     `Round ${todayRound.index + 1} played`,
-                    `Results:${resultString}`,
+                    `Results:\n${resultTable.toString()}`,
                     date.format(DATE_FORMAT)
                 )
             );
