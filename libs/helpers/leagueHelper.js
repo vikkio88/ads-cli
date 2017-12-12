@@ -5,7 +5,7 @@ import {round} from '../';
 import {newsGenerator} from '../game/news';
 import {DATE_FORMAT} from '../../const';
 import moment from "moment";
-import {bold, boxenFactory, tableFactory} from "../game/cli";
+import {bold, tableFactory} from "../game/cli";
 import {tableOrdering} from "../../utils";
 
 const LOSER_MODIFIERS = {
