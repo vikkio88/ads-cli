@@ -4,6 +4,7 @@ import {messageHelper, newsHelper} from "./utils";
 import {day} from "../simulator/day";
 import {db} from "./db";
 import {club} from "./club";
+import {messagesManager} from "./messages";
 
 export const mainActions = (status, context, game) => {
     Clear();
@@ -24,15 +25,14 @@ export const mainActions = (status, context, game) => {
             db({status, context, entity, action});
         },
         club(entity, action, payload) {
-            club({status, context, entity, action, payload})
+            club({status, context, entity, action, payload});
+        },
+        messages(action, payload) {
+            messagesManager({status, context, action, payload});
         },
         read(type, index) {
             switch (type) {
                 case 'all':
-                    if (index === 'messages') {
-                        messageHelper.setAllAsRead(status.messages);
-                        console.log(success("Set all messages as read"));
-                    }
                     if (index === 'news') {
                         newsHelper.setAllAsRead(status.news);
                         console.log(success("Set all news as read"));
@@ -47,30 +47,13 @@ export const mainActions = (status, context, game) => {
                         printNewsList(status.news);
                     }
                     break;
-                case 'message':
-                case 'messages':
-                    if (index) {
-                        messageHelper.read(status, index);
-                    } else {
-                        printMessageList(status.messages);
-                    }
-                    break;
                 default:
                     console.log(error(`wrong command: read ${type}`));
                     break;
             }
         },
-        action(type, index) {
+        action(type) {
             switch (type) {
-                case 'messages':
-                case 'message': {
-                    if (index && status.messages.length) {
-                        messageHelper.reply(status, index);
-                    } else {
-                        console.log(error(`wrong message index ${index}`));
-                    }
-                    break;
-                }
                 case 'news':
                     newsHelper.pressConference({status, context});
                     break;
