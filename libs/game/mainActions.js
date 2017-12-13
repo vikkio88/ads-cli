@@ -1,6 +1,6 @@
-import {success, error, printNewsList, printMessageList, todayInfo} from './cli';
+import {success, error, printNewsList, todayInfo} from './cli';
 import {Clear} from 'clui';
-import {messageHelper, newsHelper} from "./utils";
+import {newsHelper} from "./utils";
 import {day} from "../simulator/day";
 import {db} from "./db";
 import {club} from "./club";
