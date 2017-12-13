@@ -12,31 +12,35 @@ export const seasonOver = state => {
     const {status, context, today} = state;
     const {currentTeam} = status;
     let {name, season, table, scorers} = context.league;
-    table = leagueHelper.orderedTable(table);
+    const positionMap = {};
+    const orderedTable = leagueHelper.orderedTable(table);
+    orderedTable.forEach((r, index) => {
+        let position = index + 1;
+        positionMap[r.name] = {...r, position};
+    });
     scorers = leagueHelper.orderedScorers(scorers);
+
+    Object.keys(context.teams.hash).forEach(t => {
+        t = context.teams.hash[t];
+        t.stats.history.push({season, ...positionMap[t.name]});
+    });
 
     let position = {};
     if (currentTeam) {
-        table.some((r, index) => {
-            if (r.name === currentTeam) {
-                position = r;
-                position.position = index + 1;
-                return true;
-            }
-        })
+        position = {...positionMap[currentTeam]};
     }
 
     status.marketOpen = true;
-    status.history.seasons.push({name, season, table, scorers});
+    status.history.seasons.push({name, season, table: orderedTable, scorers});
     status.history.player.push({season, team: currentTeam, position});
 
     context.league.table = teamHelper.createCleanTable(context.teams.list);
     context.league.fixture = [];
     context.league.scorers = {};
 
-    const winner = table[0];
-    const second = table[1];
-    const third = table[2];
+    const winner = orderedTable[0];
+    const second = orderedTable[1];
+    const third = orderedTable[2];
     const topScorer = scorers[0];
     const topScorerPlayer = `${topScorer.player.name} ${topScorer.player.surname}`;
     const news = [
@@ -129,7 +133,7 @@ export const sackPlayer = state => {
         ),
         news: newsGenerator.generate(
             `${team} sacked ${name}`,
-            `${team} announced today that they terminated the contract of ${name} as new Athletic Director.\n`,
+            `${team} announced today that they terminated the contract of ${name} as Athletic Director.\n`,
             date,
         )
     }

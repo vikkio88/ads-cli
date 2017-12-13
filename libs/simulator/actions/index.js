@@ -43,9 +43,9 @@ export const acceptOffer = (state, payload) => {
 
     let playerGoals = 0;
     if (scorers[`${player.name}${player.surname}`]) {
+        playerGoals = scorers[`${player.name}${player.surname}`].goals;
         scorers[`${player.name}${player.surname}`].team = team;
         scorers[`${player.name}${player.surname}`].goals = 0;
-        playerGoals = playerGoals.goals;
     }
 
     hash[currentTeam].finance += offer;
@@ -81,6 +81,39 @@ export const acceptOffer = (state, payload) => {
 
     return {news, messages};
 
+};
+
+export const resign = (state, payload) => {
+    const {status, context} = state;
+    const {season} = context.league;
+    status.hired = false;
+    status.contract = null;
+    const team = status.currentTeam;
+    status.currentTeam = null;
+    status.fame = percentageModify(status.fame, -1 * randomizer.int(1, 10));
+    status.history.player.push({
+        season: `${season} - ${moment(state.date).format(MONTH_SHORT)}`,
+        team,
+        stats: {...context.league.table[team]}
+    });
+
+    const {name} = status.player;
+    const date = moment(state.date).format(DATE_FORMAT);
+    return {
+        messages: messageGenerator.generate(
+            'Termination of your contract',
+            `${team}`,
+            `Dear Mr ${name},\n` +
+            `It is sad to see you leaving.\n` +
+            `Thanks for your work`,
+            date
+        ),
+        news: newsGenerator.generate(
+            `${name} resigned from ${team}`,
+            `${team} announced today that ${name} resigned from the position of Athletic Director.\n`,
+            date,
+        )
+    }
 };
 
 export const speakGoodAboutTeam = (state, payload) => {

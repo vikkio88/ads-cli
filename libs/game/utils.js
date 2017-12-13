@@ -188,7 +188,7 @@ export const messageHelper = {
         if (index === 'last') {
             index = messages.length ? 1 : 0;
         }
-        const message = messages[index - 1];
+        const message = messages[index];
         if (message) {
             printMessage(message, status.date);
             messageHelper.setAsRead(message);
@@ -198,7 +198,7 @@ export const messageHelper = {
     },
     reply(status, index) {
         const {messages} = status;
-        const message = messages[index - 1];
+        const message = messages[index];
         if (message) {
             printMessage(message, status.date);
             messageHelper.setAsRead(message);
@@ -456,9 +456,6 @@ export const teamPrinter = {
 };
 
 export const personPrinter = {
-    person(person, options = {}) {
-        console.log(`${person.name} ${person.surname}`);
-    },
     coach(coach) {
         const coachInfo = tableFactory();
         coachInfo.push(
