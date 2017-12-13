@@ -97,6 +97,7 @@ const generator = {
         return {
             ...person,
             status: this.status(),
+            stats: {history: []},
             age,
             nationality: locale,
             skill,
@@ -126,7 +127,7 @@ const generator = {
             colours: this.teamColour(),
             status: this.status(),
             nationality,
-            stats: {positionTrend: []},
+            stats: {positionTrend: [], history: []},
             finance: randomizer.int(1, 100) * CURRENCY_MODIFIERS.MILLIONS,
             coach: this.coach({nationality: coachNationality, team: name}),
             roster

@@ -113,7 +113,8 @@ export const sackPlayer = state => {
     status.stability = 0;
     status.history.player.push({
         season: `${season} - ${moment(state.date).format(MONTH_SHORT)}`,
-        team
+        team,
+        stats: {...context.league.table[team]}
     });
     const {name} = status.player;
     const date = today.format(DATE_FORMAT);

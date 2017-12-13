@@ -1,6 +1,6 @@
 import {messageGenerator} from "../../game/messages";
 import {newsGenerator} from "../../game/news";
-import {DATE_FORMAT} from "../../../const";
+import {DATE_FORMAT, MONTH_SHORT} from "../../../const";
 import moment from "moment";
 import {randomizer} from "../../generator/randomizer";
 import {formatCurrency, percentageModify} from "../../../utils";
@@ -36,13 +36,26 @@ export const acceptContract = (state, payload) => {
 };
 export const acceptOffer = (state, payload) => {
     const {status, context} = state;
+    const {season, scorers} = context.league;
     const {currentTeam} = status;
     const {team, player, offer} = payload;
     const {hash} = context.teams;
+
+    let playerGoals = 0;
+    if (scorers[`${player.name}${player.surname}`]) {
+        scorers[`${player.name}${player.surname}`].team = team;
+        scorers[`${player.name}${player.surname}`].goals = 0;
+        playerGoals = playerGoals.goals;
+    }
+
     hash[currentTeam].finance += offer;
     hash[team].finance -= offer;
-
     hash[currentTeam].roster = hash[currentTeam].roster.filter(p => p !== player);
+    player.stats.history.push({
+        season: `${season} - ${moment(state.date).format(MONTH_SHORT)}`,
+        team: currentTeam,
+        stats: {goals: playerGoals}
+    });
     hash[team].roster.push(player);
     const news = [];
     const messages = [];
