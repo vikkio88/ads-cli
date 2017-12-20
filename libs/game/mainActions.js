@@ -5,6 +5,7 @@ import {day} from "../simulator/day";
 import {db} from "./db";
 import {club} from "./club";
 import {messagesManager} from "./messages";
+import {actions} from "./actions";
 
 export const mainActions = (status, context, game) => {
     Clear();
@@ -52,15 +53,8 @@ export const mainActions = (status, context, game) => {
                     break;
             }
         },
-        action(type) {
-            switch (type) {
-                case 'news':
-                    newsHelper.pressConference({status, context});
-                    break;
-                default:
-                    console.log(error(`invalid action type ${type}`));
-                    break;
-            }
+        action(entity, action, payload) {
+            actions({status, context, entity, action, payload});
         },
         n() {
             Clear();

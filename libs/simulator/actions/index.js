@@ -83,7 +83,7 @@ export const acceptOffer = (state, payload) => {
 
 };
 
-export const resign = (state, payload) => {
+export const resign = state => {
     const {status, context} = state;
     const {season} = context.league;
     status.hired = false;
@@ -91,6 +91,7 @@ export const resign = (state, payload) => {
     const team = status.currentTeam;
     status.currentTeam = null;
     status.fame = percentageModify(status.fame, -1 * randomizer.int(1, 10));
+    status.fame = percentageModify(status.fame, randomizer.int(1, 10));
     status.history.player.push({
         season: `${season} - ${moment(state.date).format(MONTH_SHORT)}`,
         team,
