@@ -1,5 +1,4 @@
 import moment from 'moment';
-import {DATE_FORMAT} from '../../const';
 
 const fixtureGenerator = {
     generate(teams = [], startDate = moment()) {
