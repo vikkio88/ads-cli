@@ -8,33 +8,23 @@ const appendNews = (status, news) => {
         return;
     }
 
-    if (Array.isArray(news)) {
-        status.news = [
-            ...news,
-            ...status.news
-        ];
-    } else {
-        status.news = [
-            news,
-            ...status.news
-        ];
-    }
+    if (!Array.isArray(news)) news = [news];
+
+    status.news = [
+        ...status.news,
+        ...news
+    ];
 };
 const appendMessages = (status, messages) => {
     if (!messages) {
         return;
     }
-    if (Array.isArray(messages)) {
-        status.messages = [
-            ...messages,
-            ...status.messages
-        ];
-    } else {
-        status.messages = [
-            messages,
-            ...status.messages
-        ];
-    }
+    if (!Array.isArray(messages)) messages = [messages];
+
+    status.messages = [
+        ...status.messages,
+        ...messages
+    ];
 };
 
 export const day = {
