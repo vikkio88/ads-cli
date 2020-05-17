@@ -73,6 +73,24 @@ export const mainActions = (status, context, game) => {
         save() {
             game.save({status, context});
         },
+        help() {
+            console.log('commands:');
+            console.log('   next, n : advance time');
+            console.log('   read news');
+            console.log('   read news INDEX: read the news at INDEX');
+            console.log('   messages:');
+            console.log('       messages read');
+            console.log('       messages reply');
+            console.log('       messages list');
+            console.log('   db:');
+            console.log('       teams: show the teams');
+            console.log('       stats: show the stats');
+            console.log('       league: ');
+            console.log('           db league table: show the league table');
+            console.log('           db league scorers: show the league scorers');
+            console.log('           db league fixtures: show the league fixtures');
+            console.log('           db league results: show the league results');
+        },
         exit() {
             return true;
         },
