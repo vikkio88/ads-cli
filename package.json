@@ -18,7 +18,7 @@
     "clui": "^0.3.6",
     "inquirer": "^4.0.0",
     "jsonfile": "^4.0.0",
-    "moment": "^2.19.2",
+    "moment": "^2.29.2",
     "numeral": "^2.0.6",
     "readline-sync": "^1.4.7"
   },
